@@ -12,6 +12,7 @@ def loadJSON(file):
 
     data = json.loads(data)
 
+
     return data
 
 # fetches the total number of PRs (open and closed) given the json file
