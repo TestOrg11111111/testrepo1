@@ -6,7 +6,9 @@ from datetime import *
 
 import numpy
 
+
 # loads the json file data
+
 def loadJSON(file):
     with open(file, 'r') as myfile:
         data = myfile.read()
