@@ -9,18 +9,19 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\Syndicate\Site\Helper\SyndicateHelper;
+// Include the syndicate functions only once
+JLoader::register('ModSyndicateHelper', __DIR__ . '/helper.php');
 
 $params->def('format', 'rss');
 
-$link = SyndicateHelper::getLink($params);
+$link = ModSyndicateHelper::getLink($params);
 
 if ($link === null)
 {
 	return;
 }
 
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 $text            = htmlspecialchars($params->get('text'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_syndicate', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_syndicate', $params->get('layout', 'default'));

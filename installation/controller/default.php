@@ -19,42 +19,48 @@ class InstallationControllerDefault extends JControllerBase
 	/**
 	 * Execute the controller.
 	 *
-	 * @return  boolean  True if controller finished execution.
+	 * @return  string  The rendered view.
 	 *
 	 * @since   3.1
 	 */
 	public function execute()
 	{
 		// Get the application
-		/** @var InstallationApplicationWeb $app */
+		/* @var InstallationApplicationWeb $app */
 		$app = $this->getApplication();
 
-		$defaultView = 'site';
+		// Get the document object.
+		$document = $app->getDocument();
 
-		// If the app has already been installed, default to the remove view
+		// Set the default view name and format from the request.
 		if (file_exists(JPATH_CONFIGURATION . '/configuration.php') && (filesize(JPATH_CONFIGURATION . '/configuration.php') > 10)
 			&& file_exists(JPATH_INSTALLATION . '/index.php'))
 		{
 			$defaultView = 'remove';
 		}
+		else
+		{
+			$defaultView = 'site';
+		}
 
-		$vName   = $this->getInput()->getWord('view', $defaultView);
-		$vFormat = $app->getDocument()->getType();
-		$lName   = $this->getInput()->getWord('layout', 'default');
+		$vName   = $this->input->getWord('view', $defaultView);
+		$vFormat = $document->getType();
+		$lName   = $this->input->getWord('layout', 'default');
 
 		if (strcmp($vName, $defaultView) === 0)
 		{
-			$this->getInput()->set('view', $defaultView);
+			$this->input->set('view', $defaultView);
 		}
 
 		switch ($vName)
 		{
 			case 'preinstall':
 				$model        = new InstallationModelSetup;
+				$sufficient   = $model->getPhpOptionsSufficient();
 				$checkOptions = false;
 				$options      = $model->getOptions();
 
-				if ($model->getPhpOptionsSufficient())
+				if ($sufficient)
 				{
 					$app->redirect('index.php');
 				}
@@ -65,16 +71,17 @@ class InstallationControllerDefault extends JControllerBase
 			case 'defaultlanguage':
 				$model        = new InstallationModelLanguages;
 				$checkOptions = false;
-				$options      = [];
+				$options      = array();
 
 				break;
 
 			default:
 				$model        = new InstallationModelSetup;
+				$sufficient   = $model->getPhpOptionsSufficient();
 				$checkOptions = true;
 				$options      = $model->getOptions();
 
-				if (!$model->getPhpOptionsSufficient())
+				if (!$sufficient)
 				{
 					$app->redirect('index.php?view=preinstall');
 				}
@@ -98,13 +105,11 @@ class InstallationControllerDefault extends JControllerBase
 			$vClass = 'InstallationViewDefault';
 		}
 
-		/** @var JViewHtml $view */
+		/* @var JViewHtml $view */
 		$view = new $vClass($model, $paths);
 		$view->setLayout($lName);
 
-		// Render our view and set it to the document.
-		$app->getDocument()->setBuffer($view->render(), 'component');
-
-		return true;
+		// Render our view and return it to the application.
+		return $view->render();
 	}
 }

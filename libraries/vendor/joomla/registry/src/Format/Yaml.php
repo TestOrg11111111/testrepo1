@@ -8,7 +8,7 @@
 
 namespace Joomla\Registry\Format;
 
-use Joomla\Registry\FormatInterface;
+use Joomla\Registry\AbstractRegistryFormat;
 use Symfony\Component\Yaml\Parser as SymfonyYamlParser;
 use Symfony\Component\Yaml\Dumper as SymfonyYamlDumper;
 
@@ -17,12 +17,12 @@ use Symfony\Component\Yaml\Dumper as SymfonyYamlDumper;
  *
  * @since  1.0
  */
-class Yaml implements FormatInterface
+class Yaml extends AbstractRegistryFormat
 {
 	/**
 	 * The YAML parser class.
 	 *
-	 * @var    SymfonyYamlParser
+	 * @var    \Symfony\Component\Yaml\Parser
 	 * @since  1.0
 	 */
 	private $parser;
@@ -30,7 +30,7 @@ class Yaml implements FormatInterface
 	/**
 	 * The YAML dumper class.
 	 *
-	 * @var    SymfonyYamlDumper
+	 * @var    \Symfony\Component\Yaml\Dumper
 	 * @since  1.0
 	 */
 	private $dumper;
@@ -57,7 +57,7 @@ class Yaml implements FormatInterface
 	 *
 	 * @since   1.0
 	 */
-	public function objectToString($object, array $options = [])
+	public function objectToString($object, $options = array())
 	{
 		$array = json_decode(json_encode($object), true);
 
@@ -75,10 +75,10 @@ class Yaml implements FormatInterface
 	 *
 	 * @since   1.0
 	 */
-	public function stringToObject($data, array $options = [])
+	public function stringToObject($data, array $options = array())
 	{
 		$array = $this->parser->parse(trim($data));
 
-		return (object) json_decode(json_encode($array));
+		return json_decode(json_encode($array));
 	}
 }

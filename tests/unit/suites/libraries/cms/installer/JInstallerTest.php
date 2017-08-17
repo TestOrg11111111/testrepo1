@@ -31,14 +31,6 @@ class JInstallerTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
-		$this->saveFactoryState();
-
-		$mockApp = $this->getMockCmsApp();
-		$mockApp->expects($this->any())
-			->method('getDispatcher')
-			->willReturn($this->getMockDispatcher());
-		JFactory::$application = $mockApp;
-
 		$this->object = new JInstaller;
 	}
 
@@ -53,10 +45,10 @@ class JInstallerTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		unset($this->object);
-		$this->restoreFactoryState();
 
 		parent::tearDown();
 	}
+
 
 	/**
 	 * Gets the data set to be loaded into the database during setup

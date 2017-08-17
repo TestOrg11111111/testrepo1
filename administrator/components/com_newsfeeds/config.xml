@@ -11,6 +11,7 @@
 			name="newsfeed_layout"
 			type="componentlayout"
 			label="JGLOBAL_FIELD_LAYOUT_LABEL"
+			description="JGLOBAL_FIELD_LAYOUT_DESC"
 			menuitems="true"
 			extension="com_newsfeeds"
 			view="newsfeed"
@@ -19,18 +20,20 @@
 		<field
 			name="save_history"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SAVE_HISTORY_OPTIONS_LABEL"
+			description="JGLOBAL_SAVE_HISTORY_OPTIONS_DESC"
 			default="0"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JNO</option>
 			<option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</field>
 		
 		<field
 			name="history_limit"
 			type="text"
 			label="JGLOBAL_HISTORY_LIMIT_OPTIONS_LABEL"
+			description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC"
 			default="5"
 			filter="integer"
 			showon="save_history:1"
@@ -39,37 +42,40 @@
 		<field
 			name="show_feed_image"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_FEED_IMAGE_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_FEED_IMAGE_DESC"
 			id="show_feed_image"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_feed_description"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_FEED_DESCRIPTION_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_FEED_DESCRIPTION_DESC"
 			id="show_feed_description"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_item_description"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_ITEM_DESCRIPTION_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_ITEM_DESCRIPTION_DESC"
 			id="show_item_description"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
@@ -86,6 +92,7 @@
 			name="feed_display_order" 
 			type="list"
 			label="COM_NEWSFEEDS_FIELD_FEED_DISPLAY_ORDER_LABEL"
+			description="COM_NEWSFEEDS_FIELD_FEED_DISPLAY_ORDER_DESC"
 			id="feed_display_order"
 			>
 			<option value="des">JGLOBAL_MOST_RECENT_FIRST</option>
@@ -96,6 +103,7 @@
 			name="float_first"
 			type="list"
 			label="COM_NEWSFEEDS_FLOAT_FIRST_LABEL"
+			description="COM_NEWSFEEDS_FLOAT_DESC"
 			>
 			<option value="right">COM_NEWSFEEDS_RIGHT</option>
 			<option value="left">COM_NEWSFEEDS_LEFT</option>
@@ -106,6 +114,7 @@
 			name="float_second"
 			type="list"
 			label="COM_NEWSFEEDS_FLOAT_SECOND_LABEL"
+			description="COM_NEWSFEEDS_FLOAT_DESC"
 			>
 			<option value="right">COM_NEWSFEEDS_RIGHT</option>
 			<option value="left">COM_NEWSFEEDS_LEFT</option>
@@ -115,13 +124,14 @@
 		<field
 			name="show_tags"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_TAGS_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_TAGS_DESC"
 			id="show_tags"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 	</fieldset>
 
@@ -135,6 +145,7 @@
 			name="category_layout"
 			type="componentlayout"
 			label="JGLOBAL_FIELD_LAYOUT_LABEL"
+			description="JGLOBAL_FIELD_LAYOUT_DESC"
 			menuitems="true"
 			extension="com_newsfeeds"
 			view="category"
@@ -143,41 +154,45 @@
 		<field
 			name="show_category_title"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_CATEGORY_TITLE"
+			description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_description"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
 			id="show_description"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_description_image"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+			description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="maxLevel"
 			type="list"
 			label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+			description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
 			default="-1"
 			>
 			<option value="0">JNONE</option>
@@ -192,48 +207,52 @@
 		<field
 			name="show_empty_categories"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+			description="COM_NEWSFEEDS_SHOW_EMPTY_CATEGORIES_DESC"
 			default="0"
+			class="btn-group btn-group-yesno"
 			showon="maxLevel:-1,1,2,3,4,5"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_subcat_desc"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			showon="maxLevel:-1,1,2,3,4,5"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_cat_items"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_CAT_ITEMS_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_CAT_ITEMS_DESC"
 			id="show_cat_items"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_cat_tags"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_CAT_TAGS_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_CAT_TAGS_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 	</fieldset>
 
@@ -246,18 +265,20 @@
 		<field
 			name="show_base_description"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
+			description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="maxLevelcat"
 			type="list"
 			label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+			description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
 			default="-1"
 			>
 			<option value="-1">JALL</option>
@@ -272,36 +293,39 @@
 		<field
 			name="show_empty_categories_cat"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+			description="COM_NEWSFEEDS_SHOW_EMPTY_CATEGORIES_DESC"
 			default="0"
+			class="btn-group btn-group-yesno"
 			showon="maxLevelcat:-1,1,2,3,4,5"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_subcat_desc_cat"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			showon="maxLevelcat:-1,1,2,3,4,5"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_cat_items_cat"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_CAT_ITEMS_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_CAT_ITEMS_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 	</fieldset>
 
@@ -314,65 +338,71 @@
 		<field
 			name="filter_field"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_FILTER_FIELD_LABEL"
+			description="JGLOBAL_FILTER_FIELD_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_pagination_limit"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
+			description="JGLOBAL_DISPLAY_SELECT_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_headings"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_SHOW_HEADINGS_LABEL"
+			description="JGLOBAL_SHOW_HEADINGS_DESC"
 			id="show_headings"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_articles"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_NUM_ARTICLES_COLUMN_LABEL"
+			description="COM_NEWSFEEDS_FIELD_NUM_ARTICLES_COLUMN_DESC"
 			id="show_articles"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_link"
 			type="radio"
-			class="switcher"
 			label="COM_NEWSFEEDS_FIELD_SHOW_LINKS_LABEL"
+			description="COM_NEWSFEEDS_FIELD_SHOW_LINKS_DESC"
 			id="show_link"
 			default="1"
+			class="btn-group btn-group-yesno"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 
 		<field
 			name="show_pagination"
 			type="list"
 			label="JGLOBAL_PAGINATION_LABEL"
+			description="JGLOBAL_PAGINATION_DESC"
 			default="2"
 			>
 			<option value="1">JSHOW</option>
@@ -383,13 +413,14 @@
 		<field
 			name="show_pagination_results"
 			type="radio"
-			class="switcher"
 			label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+			description="JGLOBAL_PAGINATION_RESULTS_DESC"
 			default="1"
+			class="btn-group btn-group-yesno"
 			showon="show_pagination:1,2"
 			>
-			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 	</fieldset>
 
@@ -399,14 +430,29 @@
 	>
 
 		<field
+			name="sef_advanced"
+			type="radio"
+			class="btn-group btn-group-yesno btn-group-reversed"
+			default="0"
+			label="JGLOBAL_SEF_ADVANCED_LABEL"
+			description="JGLOBAL_SEF_ADVANCED_DESC"
+			filter="integer"
+		>
+			<option value="0">JGLOBAL_SEF_ADVANCED_LEGACY</option>
+			<option value="1">JGLOBAL_SEF_ADVANCED_MODERN</option>
+		</field>
+
+		<field
 			name="sef_ids"
 			type="radio"
-			class="switcher"
+			class="btn-group btn-group-yesno"
 			default="0"
 			label="JGLOBAL_SEF_NOIDS_LABEL"
+			description="JGLOBAL_SEF_NOIDS_DESC"
+			showon="sef_advanced:1"
 			filter="integer">
-			<option value="0">JNO</option>
 			<option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</field>
 
 	</fieldset>

@@ -14,16 +14,13 @@
 	</languages>
 	<administration>
 		<files folder="admin">
-			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>			
-			<folder>Controller</folder>
-			<folder>Helper</folder>
+			<filename>controller.php</filename>
+			<filename>messages.php</filename>
+			<folder>controllers</folder>
 			<folder>helpers</folder>
-			<folder>Model</folder>
 			<folder>models</folder>
-			<folder>Table</folder>
-			<folder>View</folder>
+			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
 		<languages folder="admin">

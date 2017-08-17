@@ -27,4 +27,5 @@ foreach ($options as $value => $name)
 	}
 }
 
+
 echo htmlentities(implode(', ', $texts));

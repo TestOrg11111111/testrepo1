@@ -27,6 +27,7 @@
 					name="version"
 					type="list"
 					label="PLG_RECAPTCHA_VERSION_LABEL"
+					description="PLG_RECAPTCHA_VERSION_DESC"
 					default="2.0"
 					size="1"
 					>
@@ -38,6 +39,7 @@
 					name="public_key"
 					type="text"
 					label="PLG_RECAPTCHA_PUBLIC_KEY_LABEL"
+					description="PLG_RECAPTCHA_PUBLIC_KEY_DESC"
 					default=""
 					required="true"
 					filter="string"
@@ -48,6 +50,7 @@
 					name="private_key"
 					type="text"
 					label="PLG_RECAPTCHA_PRIVATE_KEY_LABEL"
+					description="PLG_RECAPTCHA_PRIVATE_KEY_DESC"
 					default=""
 					required="true"
 					filter="string"
@@ -58,8 +61,8 @@
 					name="theme"
 					type="list"
 					label="PLG_RECAPTCHA_THEME_LABEL"
+					description="PLG_RECAPTCHA_THEME_DESC"
 					default="clean"
-					required="false"
 					showon="version:1.0"
 					filter=""
 					>
@@ -73,8 +76,8 @@
 					name="theme2"
 					type="list"
 					label="PLG_RECAPTCHA_THEME_LABEL"
+					description="PLG_RECAPTCHA_THEME_DESC"
 					default="light"
-					required="false"
 					showon="version:2.0"
 					filter=""
 					>
@@ -86,8 +89,8 @@
 					name="size"
 					type="list"
 					label="PLG_RECAPTCHA_SIZE_LABEL"
+					description="PLG_RECAPTCHA_SIZE_DESC"
 					default="normal"
-					required="false"
 					showon="version:2.0"
 					filter=""
 					>

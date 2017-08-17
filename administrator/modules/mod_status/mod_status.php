@@ -9,26 +9,81 @@
 
 defined('_JEXEC') or die;
 
-$user     = JFactory::getUser();
-$lang     = JFactory::getLanguage();
-$app      = JFactory::getApplication();
-$sitename = htmlspecialchars($app->get('sitename', ''), ENT_QUOTES, 'UTF-8');
+$config = JFactory::getConfig();
+$user   = JFactory::getUser();
+$db     = JFactory::getDbo();
+$lang   = JFactory::getLanguage();
+$input  = JFactory::getApplication()->input;
 
-// Try to get the items from the post-installation model
-try
+// Get the number of unread messages in your inbox.
+$query = $db->getQuery(true)
+	->select('COUNT(*)')
+	->from('#__messages')
+	->where('state = 0 AND user_id_to = ' . (int) $user->get('id'));
+
+$db->setQuery($query);
+$unread = (int) $db->loadResult();
+
+$count = 0;
+
+// Get the number of backend logged in users if shared sessions is not enabled.
+if (!$config->get('shared_session', '0'))
 {
-	$messagesModel = new \Joomla\Component\Postinstall\Administrator\Model\Messages(['ignore_request' => true]);
-	$messages      = $messagesModel->getItems();
+	$query->clear()
+		->select('COUNT(session_id)')
+		->from('#__session')
+		->where('guest = 0 AND client_id = 1');
+
+	$db->setQuery($query);
+	$count = (int) $db->loadResult();
 }
-catch (RuntimeException $e)
+
+// Set the inbox link.
+if ($input->getBool('hidemainmenu'))
 {
-	$messages = [];
-
-	// Still render the error message from the Exception object
-	JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+	$inboxLink = '';
+}
+else
+{
+	$inboxLink = JRoute::_('index.php?option=com_messages');
 }
 
-// Load the com_postinstall language file
-$lang->load('com_postinstall', JPATH_ADMINISTRATOR, 'en-GB', true);
+// Set the inbox class.
+if ($unread)
+{
+	$inboxClass = 'unread-messages';
+}
+else
+{
+	$inboxClass = 'no-unread-messages';
+}
+
+$online_num = 0;
+
+// Get the number of frontend logged in users if shared sessions is not enabled.
+if (!$config->get('shared_session', '0'))
+{
+	$query->clear()
+		->select('COUNT(session_id)')
+		->from('#__session')
+		->where('guest = 0 AND client_id = 0');
+
+	$db->setQuery($query);
+	$online_num = (int) $db->loadResult();
+}
+
+$total_users = 0;
+
+// Get the number of logged in users if shared sessions is enabled.
+if ($config->get('shared_session', '0'))
+{
+	$query->clear()
+		->select('COUNT(session_id)')
+		->from('#__session')
+		->where('guest = 0');
+
+	$db->setQuery($query);
+	$total_users = (int) $db->loadResult();
+}
 
 require JModuleHelper::getLayoutPath('mod_status', $params->get('layout', 'default'));

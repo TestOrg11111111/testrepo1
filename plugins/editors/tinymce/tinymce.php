@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Event\Event;
-
 /**
  * TinyMCE Editor Plugin
  *
@@ -23,7 +21,7 @@ class PlgEditorTinymce extends JPlugin
 	 *
 	 * @since  3.5
 	 */
-	protected $_basePath = 'media/vendor/tinymce';
+	protected $_basePath = 'media/editors/tinymce';
 
 	/**
 	 * Load the language file on instantiation.
@@ -51,6 +49,7 @@ class PlgEditorTinymce extends JPlugin
 	public function onInit()
 	{
 		JHtml::_('behavior.core');
+		JHtml::_('behavior.polyfill', array('event'), 'lt IE 9');
 		JHtml::_('script', $this->_basePath . '/tinymce.min.js', array('version' => 'auto'));
 		JHtml::_('script', 'editors/tinymce/tinymce.min.js', array('version' => 'auto', 'relative' => true));
 	}
@@ -263,7 +262,7 @@ class PlgEditorTinymce extends JPlugin
 		$levelParams->loadObject($extraOptions);
 
 		// List the skins
-		$skindirs = glob(JPATH_ROOT . '/media/vendor/tinymce/skins' . '/*', GLOB_ONLYDIR);
+		$skindirs = glob(JPATH_ROOT . '/media/editors/tinymce/skins' . '/*', GLOB_ONLYDIR);
 
 		// Set the selected skin
 		$skin = 'lightgray';
@@ -279,11 +278,11 @@ class PlgEditorTinymce extends JPlugin
 
 		if ($langMode)
 		{
-			if (file_exists(JPATH_ROOT . '/media/vendor/tinymce/langs/' . $language->getTag() . '.js'))
+			if (file_exists(JPATH_ROOT . '/media/editors/tinymce/langs/' . $language->getTag() . '.js'))
 			{
 				$langPrefix = $language->getTag();
 			}
-			elseif (file_exists(JPATH_ROOT . '/media/vendor/tinymce/langs/' . substr($language->getTag(), 0, strpos($language->getTag(), '-')) . '.js'))
+			elseif (file_exists(JPATH_ROOT . '/media/editors/tinymce/langs/' . substr($language->getTag(), 0, strpos($language->getTag(), '-')) . '.js'))
 			{
 				$langPrefix = substr($language->getTag(), 0, strpos($language->getTag(), '-'));
 			}
@@ -474,10 +473,9 @@ class PlgEditorTinymce extends JPlugin
 			$levelParams->loadArray($preset);
 		}
 
-		$menubar         = (array) $levelParams->get('menu', array());
-		$toolbar1        = (array) $levelParams->get('toolbar1', array());
-		$toolbar2        = (array) $levelParams->get('toolbar2', array());
-		$externalPlugins = array();
+		$menubar  = (array) $levelParams->get('menu', array());
+		$toolbar1 = (array) $levelParams->get('toolbar1', array());
+		$toolbar2 = (array) $levelParams->get('toolbar2', array());
 
 		// Make an easy way to check which button is enabled
 		$allButtons = array_merge($toolbar1, $toolbar2);
@@ -498,10 +496,10 @@ class PlgEditorTinymce extends JPlugin
 		if (!empty($allButtons['template']))
 		{
 			// Note this check for the template_list.js file will be removed in Joomla 4.0
-			if (is_file(JPATH_ROOT . "/media/vendor/tinymce/templates/template_list.js"))
+			if (is_file(JPATH_ROOT . '/media/editors/tinymce/templates/template_list.js'))
 			{
 				// If using the legacy file we need to include and input the files the new way
-				$str = file_get_contents(JPATH_ROOT . "/media/vendor/tinymce/templates/template_list.js");
+				$str = file_get_contents(JPATH_ROOT . '/media/editors/tinymce/templates/template_list.js');
 
 				// Find from one [ to the last ]
 				$matches = array();
@@ -525,7 +523,7 @@ class PlgEditorTinymce extends JPlugin
 			}
 			else
 			{
-				foreach (glob(JPATH_ROOT . '/media/vendor/tinymce/templates/*.html') as $filename)
+				foreach (glob(JPATH_ROOT . '/media/editors/tinymce/templates/*.html') as $filename)
 				{
 					$filename = basename($filename, '.html');
 
@@ -548,7 +546,7 @@ class PlgEditorTinymce extends JPlugin
 						$templates[] = array(
 							'title' => $title,
 							'description' => $description,
-							'url' => JUri::root(true) . '/media/vendor/tinymce/templates/' . $filename . '.html',
+							'url' => JUri::root(true) . '/media/editors/tinymce/templates/' . $filename . '.html',
 						);
 					}
 				}
@@ -587,7 +585,6 @@ class PlgEditorTinymce extends JPlugin
 		if ($dragdrop && $user->authorise('core.create', 'com_media'))
 		{
 			$externalPlugins['jdragdrop'] = JUri::root() . 'media/editors/tinymce/js/plugins/dragdrop/plugin.min.js';
-
 			$allowImgPaste = true;
 			$isSubDir      = '';
 			$session       = JFactory::getSession();
@@ -628,7 +625,7 @@ class PlgEditorTinymce extends JPlugin
 			$scriptOptions,
 			array(
 			'suffix'  => '.min',
-			'baseURL' => JUri::root(true) . '/media/vendor/tinymce',
+			'baseURL' => JUri::root(true) . '/media/editors/tinymce',
 			'directionality' => $text_direction,
 			'language' => $langPrefix,
 			'autosave_restore_when_empty' => false,
@@ -670,13 +667,7 @@ class PlgEditorTinymce extends JPlugin
 			'image_advtab'       => (bool) $levelParams->get('image_advtab', false),
 			'external_plugins'   => empty($externalPlugins) ? null  : $externalPlugins,
 
-			// Drag and drop specific
-			'dndEnabled' => $dragdrop,
-			'dndPath'    => JUri::root() . 'media/editors/tinymce/js/dragdrop/plugin.min.js',
-
-			// Disable TinyMCE Branding
-			'branding'	=> false,
-			)
+		)
 		);
 
 		if ($levelParams->get('newlines'))
@@ -727,6 +718,7 @@ class PlgEditorTinymce extends JPlugin
 
 		$options['tinyMCE']['default'] = $scriptOptions;
 
+		$doc->addStyleDeclaration('.mce-in { padding: 5px 10px !important;}');
 		$doc->addScriptOptions('plg_editor_tinymce', $options);
 
 		return $editor;
@@ -755,16 +747,7 @@ class PlgEditorTinymce extends JPlugin
 	private function tinyButtons($name, $excluded)
 	{
 		// Get the available buttons
-		$buttonsEvent = new Event(
-			'getButtons',
-			[
-				'editor'  => $name,
-				'buttons' => $excluded,
-			]
-		);
-
-		$buttonsResult = $this->getDispatcher()->dispatch('getButtons', $buttonsEvent);
-		$buttons       = $buttonsResult['result'];
+		$buttons = $this->_subject->getButtons($name, $excluded);
 
 		// Init the arrays for the buttons
 		$tinyBtns  = array();
@@ -866,8 +849,8 @@ class PlgEditorTinymce extends JPlugin
 		}
 
 		return array(
-			'names'  => $btnsNames,
-			'script' => $tinyBtns
+				'names'  => $btnsNames,
+				'script' => $tinyBtns
 		);
 	}
 
@@ -1927,11 +1910,6 @@ class PlgEditorTinymce extends JPlugin
 			);
 		}
 
-			$externalPlugins = array(
-				array('jdragdrop' => ($app->isClient('site') ? JUri::root(false)  : str_replace('/administrator', JUri::root(false)))
-						. '/media/editors/tinymce/js/plugins/jdragdrop/plugin.min.js')
-				);
-
 		// Prepare config variables
 		$plugins  = implode(',', $plugins);
 		$elements = implode(',', $elements);
@@ -2009,7 +1987,6 @@ class PlgEditorTinymce extends JPlugin
 				$scriptOptions['menubar']  = false;
 				$scriptOptions['toolbar1'] = 'bold italic underline strikethrough | undo redo | bullist numlist | code';
 				$scriptOptions['plugins']  = ' code';
-				$scriptOptions['external_plugins']  = $externalPlugins;
 
 				break;
 
@@ -2022,7 +1999,6 @@ class PlgEditorTinymce extends JPlugin
 				$scriptOptions['extended_valid_elements'] = $elements;
 				$scriptOptions['invalid_elements'] = $invalid_elements;
 				$scriptOptions['plugins']  = 'table link code hr charmap autolink lists importcss ';
-				$scriptOptions['external_plugins']  = $externalPlugins;
 				$scriptOptions['toolbar1'] = $toolbar1;
 				$scriptOptions['removed_menuitems'] = 'newdocument';
 				$scriptOptions['importcss_append']  = true;
@@ -2037,7 +2013,6 @@ class PlgEditorTinymce extends JPlugin
 				$scriptOptions['extended_valid_elements'] = $elements;
 				$scriptOptions['invalid_elements'] = $invalid_elements;
 				$scriptOptions['plugins']  = $plugins;
-				$scriptOptions['external_plugins']  = $externalPlugins;
 				$scriptOptions['toolbar1'] = $toolbar1;
 				$scriptOptions['removed_menuitems'] = 'newdocument';
 				$scriptOptions['rel_list'] = array(
@@ -2068,6 +2043,7 @@ class PlgEditorTinymce extends JPlugin
 
 		$options['tinyMCE']['default'] = $scriptOptions;
 
+		$doc->addStyleDeclaration(".mce-in { padding: 5px 10px !important;}");
 		$doc->addScriptOptions('plg_editor_tinymce', $options);
 
 		return $editor;

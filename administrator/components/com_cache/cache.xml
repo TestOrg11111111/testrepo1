@@ -13,12 +13,8 @@
 		<files folder="admin">
 			<filename>cache.php</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
-			<folder>Controller</folder>
-			<folder>Helper</folder>
-			<folder>Model</folder>
+			<filename>controller.php</filename>
 			<folder>models</folder>
-			<folder>View</folder>
 			<folder>views</folder>
 		</files>
 		<languages folder="admin">

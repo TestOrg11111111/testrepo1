@@ -82,25 +82,25 @@ class JHtmlFormbehaviorTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/jquery/js/jquery.min.js',
+			'/media/jui/js/jquery.min.js',
 			$document->_scripts,
 			'Verify that the chosen method initialises jQuery as well'
 		);
 
 		$this->assertArrayHasKey(
-			'/media/system/js/legacy/chosen.min.js',
+			'/media/jui/js/chosen.jquery.min.js',
 			$document->_scripts,
 			'Verify that the Chosen JS is loaded'
 		);
 
 		$this->assertArrayHasKey(
-			'/media/system/css/legacy/chosen.css',
+			'/media/jui/css/chosen.css',
 			$document->_styleSheets,
 			'Verify that the Chosen CSS is loaded'
 		);
 
 		$this->assertContains(
-			'jQuery(\'testSelect\').chosen',
+			'$(container).find("testSelect").chosen',
 			$document->_script['text/javascript'],
 			'Verify that the Chosen JS is initialised with the supplied selector'
 		);

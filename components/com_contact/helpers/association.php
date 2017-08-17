@@ -9,9 +9,8 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Component\Contact\Site\Helper\Route as ContactHelperRoute;
-
 JLoader::register('ContactHelper', JPATH_ADMINISTRATOR . '/components/com_contact/helpers/contact.php');
+JLoader::register('ContactHelperRoute', JPATH_SITE . '/components/com_contact/helpers/route.php');
 JLoader::register('CategoryHelperAssociation', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/association.php');
 
 /**
@@ -41,7 +40,7 @@ abstract class ContactHelperAssociation extends CategoryHelperAssociation
 		{
 			if ($id)
 			{
-				$associations = \Joomla\CMS\Language\Associations::getAssociations('com_contact', '#__contact_details', 'com_contact.item', $id);
+				$associations = JLanguageAssociations::getAssociations('com_contact', '#__contact_details', 'com_contact.item', $id);
 
 				$return = array();
 

@@ -8,7 +8,7 @@
 
 namespace Joomla\Registry\Format;
 
-use Joomla\Registry\FormatInterface;
+use Joomla\Registry\AbstractRegistryFormat;
 use SimpleXMLElement;
 use stdClass;
 
@@ -17,7 +17,7 @@ use stdClass;
  *
  * @since  1.0
  */
-class Xml implements FormatInterface
+class Xml extends AbstractRegistryFormat
 {
 	/**
 	 * Converts an object into an XML formatted string.
@@ -31,7 +31,7 @@ class Xml implements FormatInterface
 	 *
 	 * @since   1.0
 	 */
-	public function objectToString($object, array $options = [])
+	public function objectToString($object, $options = array())
 	{
 		$rootName = (isset($options['name'])) ? $options['name'] : 'registry';
 		$nodeName = (isset($options['nodeName'])) ? $options['nodeName'] : 'node';
@@ -55,7 +55,7 @@ class Xml implements FormatInterface
 	 *
 	 * @since   1.0
 	 */
-	public function stringToObject($data, array $options = [])
+	public function stringToObject($data, array $options = array())
 	{
 		$obj = new stdClass;
 
@@ -106,7 +106,7 @@ class Xml implements FormatInterface
 				break;
 
 			case 'array':
-				$value = [];
+				$value = array();
 
 				foreach ($node->children() as $child)
 				{

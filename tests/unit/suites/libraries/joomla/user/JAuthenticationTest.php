@@ -44,7 +44,6 @@ class JAuthenticationTest extends TestCase
 	protected function setUp()
 	{
 		parent::setUp();
-		$this->saveFactoryState();
 
 		$this->backupServer = $_SERVER;
 
@@ -52,10 +51,16 @@ class JAuthenticationTest extends TestCase
 		$_SERVER['SCRIPT_NAME'] = '';
 
 		// Mock the event dispatcher.
-		$dispatcher = $this->getMockDispatcher();
-		$dispatcher->expects($this->any())
-			->method('triggerEvent')
-			->willReturnCallback(array($this, 'mockTrigger'));
+		$dispatcher = $this->getMockDispatcher(false);
+		$this->assignMockCallbacks(
+			$dispatcher,
+			array(
+				'trigger' => array(get_called_class(), 'mockTrigger'),
+			)
+		);
+
+		// Inject the mock dispatcher into the JEventDispatcher singleton.
+		TestReflection::setValue('JEventDispatcher', 'instance', $dispatcher);
 
 		// Mock the authentication plugin
 		require_once __DIR__ . '/stubs/FakeAuthenticationPlugin.php';
@@ -68,13 +73,6 @@ class JAuthenticationTest extends TestCase
 				)
 			)
 		);
-
-		JFactory::$application = $this->getMockCmsApp();
-		JFactory::$application->expects($this->any())
-			->method('triggerEvent')
-			->willReturnCallback(array($this, 'mockTrigger'));
-
-		$this->object = new JAuthentication($dispatcher);
 	}
 
 	/**
@@ -87,9 +85,11 @@ class JAuthenticationTest extends TestCase
 	 */
 	protected function tearDown()
 	{
+		// Reset the dispatcher instance.
+		TestReflection::setValue('JEventDispatcher', 'instance', null);
+
 		// Reset the loaded plugins.
 		TestReflection::setValue('JPluginHelper', 'plugins', null);
-		$this->restoreFactoryState();
 
 		$_SERVER = $this->backupServer;
 
@@ -97,7 +97,7 @@ class JAuthenticationTest extends TestCase
 	}
 
 	/**
-	 * Callback for the DispatcherInterface trigger method.
+	 * Callback for the JEventDispatcher trigger method.
 	 *
 	 * @param   string  $event  The event to trigger.
 	 * @param   array   $args   An array of arguments.
@@ -208,9 +208,10 @@ class JAuthenticationTest extends TestCase
 	 */
 	public function testAuthentication($input, $expect, $message)
 	{
+		$authenticate = JAuthentication::getInstance();
 		$this->assertEquals(
 			$expect,
-			$this->object->authenticate($input),
+			$authenticate->authenticate($input),
 			$message
 		);
 	}

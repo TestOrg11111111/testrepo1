@@ -9,8 +9,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-use Joomla\Database\DatabaseDriver;
-
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -45,7 +43,7 @@ class JFormFieldDatabaseConnection extends JFormFieldList
 	protected function getOptions()
 	{
 		// This gets the connectors available in the platform and supported by the server.
-		$available = array_map('strtolower', DatabaseDriver::getConnectors());
+		$available = JDatabaseDriver::getConnectors();
 
 		/**
 		 * This gets the list of database types supported by the application.

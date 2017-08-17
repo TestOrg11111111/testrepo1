@@ -42,7 +42,7 @@ final class EventImmutable extends AbstractEvent
 	 *
 	 * @since   1.0
 	 */
-	public function __construct($name, array $arguments = [])
+	public function __construct($name, array $arguments = array())
 	{
 		if ($this->constructed)
 		{
@@ -64,8 +64,9 @@ final class EventImmutable extends AbstractEvent
 	 *
 	 * @return  void
 	 *
-	 * @since   1.0
 	 * @throws  BadMethodCallException
+	 *
+	 * @since   1.0
 	 */
 	public function offsetSet($name, $value)
 	{

@@ -9,9 +9,10 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\ArticlesNews\Site\Helper\ArticlesNewsHelper;
+// Include the news functions only once
+JLoader::register('ModArticlesNewsHelper', __DIR__ . '/helper.php');
 
-$list            = ArticlesNewsHelper::getList($params);
+$list            = ModArticlesNewsHelper::getList($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_articles_news', $params->get('layout', 'horizontal'));
+require JModuleHelper::getLayoutPath('mod_articles_news', $params->get('layout', 'horizontal'));

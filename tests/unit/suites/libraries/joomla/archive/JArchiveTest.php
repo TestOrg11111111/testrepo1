@@ -63,6 +63,10 @@ class JArchiveTest extends JArchiveTestCase
 			$this->markTestSkipped('Gzip files can not be extracted.');
 		}
 
+		// We need a configuration with a tmp_path set
+		$config = JFactory::$config;
+		$config->set('tmp_path', __DIR__ . '/output');
+
 		JArchive::extract(__DIR__ . '/logo-gz.png.gz', $this->outputPath);
 		$this->assertFileExists($this->outputPath . '/logo-gz.png');
 	}
@@ -79,6 +83,10 @@ class JArchiveTest extends JArchiveTestCase
 			$this->markTestSkipped('Bzip2 files can not be extracted.');
 		}
 
+		// We need a configuration with a tmp_path set
+		$config = JFactory::$config;
+		$config->set('tmp_path', __DIR__ . '/output');
+
 		JArchive::extract(__DIR__ . '/logo-bz2.png.bz2', $this->outputPath);
 		$this->assertFileExists($this->outputPath . '/logo-bz2.png');
 	}
@@ -92,7 +100,6 @@ class JArchiveTest extends JArchiveTestCase
 	 */
 	public function testExtractUnknownType()
 	{
-
 		JArchive::extract(__DIR__ . '/unknown.type', $this->outputPath);
 	}
 

@@ -41,15 +41,9 @@ class JUserTest extends TestCaseDatabase
 
 		$this->saveFactoryState();
 
-		$mockApp = $this->getMockCmsApp();
-		$mockApp->expects($this->any())
-			->method('getDispatcher')
-			->willReturn($this->getMockDispatcher());
-
-		JFactory::$application = $mockApp;
-
 		$this->object = new JUser('42');
 
+		JFactory::$application = $this->getMockCmsApp();
 		JFactory::$session     = $this->getMockSession();
 	}
 
@@ -213,7 +207,6 @@ class JUserTest extends TestCaseDatabase
 				'root.1',
 				true
 			),
-			// TODO - When `assertSame` is used, this case fails because a null value is returned
 			'core.admin Other user' => array(
 				43,
 				'core.admin',
@@ -253,9 +246,22 @@ class JUserTest extends TestCaseDatabase
 	public function testAuthorise($userId, $action, $asset, $expected)
 	{
 		// Set up user 99 to be root_user from configuration
-		JFactory::$application->getConfig()->set('root_user', 99);
+		$testConfig = $this->getMockBuilder('JConfig')->setMethods(array('get'))->getMock();
+		$testConfig->expects(
+			$this->any()
+		)
+			->method('get')
+			->will($this->returnValue(99));
+		JFactory::$config = $testConfig;
 
-		$this->assertEquals($expected, (new JUser($userId))->authorise($action, $asset), 'Failed for user ' . $userId);
+		// Run through test cases
+		$user = new JUser($userId);
+		$this->assertThat(
+			$user->authorise($action, $asset),
+			$this->equalTo($expected),
+			'Line: ' . __LINE__ . ' Failed for user ' . $user->id
+		);
+
 	}
 
 	/**

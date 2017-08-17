@@ -25,6 +25,9 @@ function jexit($message = 0)
 
 define('_JEXEC', 1);
 
+// Fix magic quotes.
+ini_set('magic_quotes_runtime', 0);
+
 // Maximise error reporting.
 ini_set('zend.ze1_compatibility_mode', '0');
 error_reporting(E_ALL);
@@ -103,7 +106,10 @@ if (!defined('JDEBUG'))
 }
 
 // Import the platform in legacy mode.
-require_once JPATH_PLATFORM . '/bootstrap.php';
+require_once JPATH_PLATFORM . '/import.legacy.php';
+
+// Bootstrap the CMS libraries.
+require_once JPATH_LIBRARIES . '/cms.php';
 
 // Register the core Joomla test classes.
 JLoader::registerPrefix('Test', __DIR__ . '/core');

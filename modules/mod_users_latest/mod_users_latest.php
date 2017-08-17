@@ -9,10 +9,11 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\UsersLatest\Site\Helper\UsersLatestHelper;
+// Include the latest functions only once
+JLoader::register('ModUsersLatestHelper', __DIR__ . '/helper.php');
 
 $shownumber      = $params->get('shownumber', 5);
-$names           = UsersLatestHelper::getUsers($params);
+$names           = ModUsersLatestHelper::getUsers($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_users_latest', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_users_latest', $params->get('layout', 'default'));

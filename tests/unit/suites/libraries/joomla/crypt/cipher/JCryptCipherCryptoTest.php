@@ -30,7 +30,7 @@ class JCryptCipherCryptoTest extends TestCase
 		}
 		catch (CannotPerformOperationException $e)
 		{
-			self::markTestSkipped('The environment does not have mcrypt enabled.');
+			self::markTestSkipped('The environment cannot safely perform encryption with this cipher.');
 		}
 	}
 
@@ -89,13 +89,13 @@ class JCryptCipherCryptoTest extends TestCase
 		$key    = $cipher->generateKey();
 
 		// Assert that the key is the correct type.
-		$this->assertInstanceOf('\Joomla\Crypt\Key', $key);
+		$this->assertInstanceOf('JCryptKey', $key);
 
 		// Assert the private key is our expected value.
-		$this->assertSame('unused', $key->getPrivate());
+		$this->assertSame('unused', $key->private);
 
 		// Assert the public key is the expected length
-		$this->assertSame(Crypto::KEY_BYTE_SIZE, JCrypt::safeStrlen($key->getPublic()));
+		$this->assertSame(Crypto::KEY_BYTE_SIZE, JCrypt::safeStrlen($key->public));
 
 		// Assert the key is of the correct type.
 		$this->assertAttributeEquals('crypto', 'type', $key);

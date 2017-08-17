@@ -79,9 +79,6 @@ abstract class TestCaseDatabasePdomysql extends TestCaseDatabase
 				case 'pass':
 					self::$_options['password'] = $v;
 					break;
-				case 'charset':
-					self::$_options['charset'] = $v;
-					break;
 			}
 		}
 

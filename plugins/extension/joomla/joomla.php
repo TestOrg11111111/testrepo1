@@ -128,17 +128,17 @@ class PlgExtensionJoomla extends JPlugin
 	 *
 	 * @param   JInstaller  $installer  Installer instance
 	 * @param   integer     $eid        Extension id
-	 * @param   boolean     $removed    Installation result
+	 * @param   boolean     $result     Installation result
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	public function onExtensionAfterUninstall($installer, $eid, $removed)
+	public function onExtensionAfterUninstall($installer, $eid, $result)
 	{
 		// If we have a valid extension ID and the extension was successfully uninstalled wipe out any
 		// update sites for it
-		if ($eid && $removed)
+		if ($eid && $result)
 		{
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)

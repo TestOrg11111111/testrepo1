@@ -9,9 +9,10 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\ArticlesPopular\Site\Helper\ArticlesPopularHelper;
+// Include the popular functions only once
+JLoader::register('ModArticlesPopularHelper', __DIR__ . '/helper.php');
 
-$list            = ArticlesPopularHelper::getList($params);
+$list = ModArticlesPopularHelper::getList($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_articles_popular', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_articles_popular', $params->get('layout', 'default'));

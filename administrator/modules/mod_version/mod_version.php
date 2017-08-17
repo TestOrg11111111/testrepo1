@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
-$version = \Joomla\Module\Version\Administrator\Helper\VersionHelper::getVersion();
+JLoader::register('ModVersionHelper', __DIR__ . '/helper.php');
 
-require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_version', $params->get('layout', 'default'));
+$version = ModVersionHelper::getVersion($params);
+
+require JModuleHelper::getLayoutPath('mod_version', $params->get('layout', 'default'));

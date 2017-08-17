@@ -26,7 +26,7 @@ class Sketchy extends ImageFilter
 	 *
 	 * @since   1.0
 	 */
-	public function execute(array $options = [])
+	public function execute(array $options = array())
 	{
 		// Perform the sketchy filter.
 		imagefilter($this->handle, IMG_FILTER_MEAN_REMOVAL);

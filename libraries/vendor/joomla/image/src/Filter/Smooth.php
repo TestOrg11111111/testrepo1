@@ -9,6 +9,7 @@
 namespace Joomla\Image\Filter;
 
 use Joomla\Image\ImageFilter;
+use InvalidArgumentException;
 
 /**
  * Image Filter class adjust the smoothness of an image.
@@ -25,14 +26,14 @@ class Smooth extends ImageFilter
 	 * @return  void
 	 *
 	 * @since   1.0
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 */
-	public function execute(array $options = [])
+	public function execute(array $options = array())
 	{
 		// Validate that the smoothing value exists and is an integer.
 		if (!isset($options[IMG_FILTER_SMOOTH]) || !is_int($options[IMG_FILTER_SMOOTH]))
 		{
-			throw new \InvalidArgumentException('No valid smoothing value was given.  Expected integer.');
+			throw new InvalidArgumentException('No valid smoothing value was given.  Expected integer.');
 		}
 
 		// Perform the smoothing filter.

@@ -6,6 +6,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+/**
+ * A command line cron job to attempt to remove files that should have been deleted at update.
+ */
+
 // We are a valid entry point.
 const _JEXEC = 1;
 
@@ -22,7 +26,10 @@ if (!defined('_JDEFINES'))
 }
 
 // Get the framework.
-require_once JPATH_BASE . '/includes/framework.php';
+require_once JPATH_LIBRARIES . '/import.legacy.php';
+
+// Bootstrap the CMS libraries.
+require_once JPATH_LIBRARIES . '/cms.php';
 
 // Configure error reporting to maximum for CLI output.
 error_reporting(E_ALL);
@@ -41,7 +48,7 @@ $lang->load('files_joomla.sys', JPATH_SITE, null, false, false)
  *
  * @since  3.0
  */
-class DeletefilesCli extends \Joomla\CMS\Application\CliApplication
+class DeletefilesCli extends JApplicationCli
 {
 	/**
 	 * Entry point for CLI script
@@ -50,36 +57,23 @@ class DeletefilesCli extends \Joomla\CMS\Application\CliApplication
 	 *
 	 * @since   3.0
 	 */
-	protected function doExecute()
+	public function doExecute()
 	{
 		// Import the dependencies
-		JLoader::import('joomla.filesystem.file');
-		JLoader::import('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
 
 		// We need the update script
 		JLoader::register('JoomlaInstallerScript', JPATH_ADMINISTRATOR . '/components/com_admin/script.php');
 
 		// Instantiate the class
-		(new JoomlaInstallerScript)->deleteUnexistingFiles();
+		$class = new JoomlaInstallerScript;
+
+		// Run the delete method
+		$class->deleteUnexistingFiles();
 	}
 }
 
-// Set up the container
-JFactory::getContainer()->share(
-	'DeletefilesCli',
-	function (\Joomla\DI\Container $container)
-	{
-		return new DeletefilesCli(
-			null,
-			null,
-			null,
-			null,
-			$container->get(\Joomla\Event\DispatcherInterface::class),
-			$container
-		);
-	},
-	true
-);
-$app = JFactory::getContainer()->get('DeletefilesCli');
-JFactory::$application = $app;
-$app->execute();
+// Instantiate the application object, passing the class name to JCli::getInstance
+// and use chaining to execute the application.
+JApplicationCli::getInstance('DeletefilesCli')->execute();

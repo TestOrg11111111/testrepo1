@@ -22,7 +22,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'id' => 'myTestId',
 				'name' => 'myTestName',
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" />',
 		),
 
 		'Value' => array(
@@ -31,7 +31,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'value' => 'foobar',
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="foobar" class="form-control"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="foobar" />',
 		),
 
 		'Class' => array(
@@ -40,7 +40,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'class' => 'foo bar',
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control foo bar"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" class="foo bar" />',
 		),
 
 		'Size' => array(
@@ -49,7 +49,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'size' => 60,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" size="60"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" size="60" />',
 		),
 
 		'Disabled' => array(
@@ -58,7 +58,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'disabled' => true,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" disabled><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" disabled />',
 		),
 
 		'Readonly' => array(
@@ -67,7 +67,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'readonly' => true,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" readonly><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" readonly />',
 		),
 
 		'Hint' => array(
@@ -76,7 +76,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'hint' => 'Type any password.',
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" placeholder="Type any password." class="form-control"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" placeholder="Type any password." />',
 		),
 
 		'Autocomplete' => array(
@@ -85,7 +85,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'autocomplete' => false,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" autocomplete="off" class="form-control"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" autocomplete="off" />',
 		),
 
 		'Autofocus' => array(
@@ -94,7 +94,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'autofocus' => true,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" autofocus><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" autofocus />',
 		),
 
 		'Maxlength' => array(
@@ -103,7 +103,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'maxLength' => 250,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" maxlength="250"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" maxlength="250" />',
 		),
 
 		'Required' => array(
@@ -112,7 +112,7 @@ class JHtmlFieldPasswordTest_DataSet
 				'name' => 'myTestName',
 				'required' => true,
 			),
-			'<div class="password-group"><div class="input-group"><input type="password" name="myTestName" id="myTestId" value="" class="form-control" required aria-required="true"><span class="input-group-addon"><span class="fa fa-eye" aria-hidden="true"></span><span class="sr-only">Show</span></span></div></div>',
+			'<input type="password" name="myTestName" id="myTestId" value="" required aria-required="true" />',
 		),
 
 	);

@@ -57,20 +57,15 @@ class PlgButtonImage extends JPlugin
 			|| (count($user->getAuthorisedCategories($extension, 'core.edit')) > 0)
 			|| (count($user->getAuthorisedCategories($extension, 'core.edit.own')) > 0 && $author === $user->id))
 		{
-			$link = 'index.php?option=com_media&amp;tmpl=component&amp;e_name=' . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
+			$link = 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=' . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
 
 			$button = new JObject;
 			$button->modal   = true;
-			$button->class   = 'btn btn-secondary';
+			$button->class   = 'btn';
 			$button->link    = $link;
 			$button->text    = JText::_('PLG_IMAGE_BUTTON_IMAGE');
 			$button->name    = 'pictures';
-			$button->options = array(
-				'height'     => '300px',
-				'width'      => '800px',
-				'bodyHeight' => '70',
-				'modalWidth' => '80',
-			);
+			$button->options = "{handler: 'iframe', size: {x: 800, y: 500}}";
 
 			return $button;
 		}

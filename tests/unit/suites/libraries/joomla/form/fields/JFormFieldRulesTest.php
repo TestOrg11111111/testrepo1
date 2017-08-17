@@ -19,13 +19,6 @@ JFormHelper::loadFieldClass('rules');
 class JFormFieldRulesTest extends TestCaseDatabase
 {
 	/**
-	 * $_SERVER variable
-	 *
-	 * @var   array
-	 */
-	protected $server;
-
-	/**
 	 * Sets up dependencies for the test.
 	 *
 	 * @return void
@@ -35,10 +28,6 @@ class JFormFieldRulesTest extends TestCaseDatabase
 		parent::setUp();
 
 		$this->saveFactoryState();
-		$this->server = $_SERVER;
-		$_SERVER['REQUEST_METHOD'] = 'get';
-		$_SERVER['HTTP_HOST'] = 'mydomain.com';
-		$_SERVER['SCRIPT_NAME'] = '/';
 
 		JFactory::$application = $this->getMockCmsApp();
 		JFactory::$session = $this->getMockSession();
@@ -53,8 +42,6 @@ class JFormFieldRulesTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		$this->restoreFactoryState();
-		$_SERVER = $this->server;
-		JUri::reset();
 
 		parent::tearDown();
 	}

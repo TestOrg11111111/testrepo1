@@ -123,7 +123,7 @@ class PlgAuthenticationGMail extends JPlugin
 		{
 			// If there was an error in the request then create a 'false' dummy response.
 			$result = new JHttpResponse;
-			$result = $result->withStatus(500);
+			$result->code = false;
 		}
 
 		$code = $result->code;

@@ -36,14 +36,6 @@ class JTableTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
-		$this->saveFactoryState();
-
-		$mockApp = $this->getMockCmsApp();
-		$mockApp->expects($this->any())
-			->method('getDispatcher')
-			->willReturn($this->getMockDispatcher());
-		JFactory::$application = $mockApp;
-
 		$this->object = new TableDbTestComposite(TestCaseDatabase::$driver);
 	}
 
@@ -58,8 +50,6 @@ class JTableTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		unset($this->object);
-		$this->restoreFactoryState();
-
 		parent::tearDown();
 	}
 
@@ -118,7 +108,7 @@ class JTableTest extends TestCaseDatabase
 				),
 				'checked_out_time' => (object) array(
 					'Field' => 'checked_out_time',
-					'Type' => 'TEXT',
+					'Type' => 'DATETIME',
 					'Null' => 'NO',
 					'Default' => '\'0000-00-00 00:00:00\'',
 					'Key' => ''
@@ -132,14 +122,14 @@ class JTableTest extends TestCaseDatabase
 				),
 				'publish_up' => (object) array(
 					'Field' => 'publish_up',
-					'Type' => 'TEXT',
+					'Type' => 'DATETIME',
 					'Null' => 'NO',
 					'Default' => '\'0000-00-00 00:00:00\'',
 					'Key' => ''
 				),
 				'publish_down' => (object) array(
 					'Field' => 'publish_down',
-					'Type' => 'TEXT',
+					'Type' => 'DATETIME',
 					'Null' => 'NO',
 					'Default' => '\'0000-00-00 00:00:00\'',
 					'Key' => ''
@@ -204,7 +194,7 @@ class JTableTest extends TestCaseDatabase
 		$expected = array(
 			'/dummy/',
 			'dir/not/exist',
-			realpath(JPATH_PLATFORM . '/src/CMS/Table')
+			realpath(JPATH_PLATFORM . '/src/Table')
 		);
 
 		// Add dummy paths

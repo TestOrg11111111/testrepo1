@@ -9,7 +9,6 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>3.0.0</version>
 	<description>COM_CONTACT_XML_DESCRIPTION</description>
-	<namespace>Joomla\Component\Contact</namespace>
 
 	<install> <!-- Runs on install -->
 		<sql>

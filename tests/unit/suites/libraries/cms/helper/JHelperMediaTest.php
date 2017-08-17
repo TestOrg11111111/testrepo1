@@ -134,9 +134,8 @@ class JHelperMediaTest extends TestCaseDatabase
 	 */
 	public function testCountFiles()
 	{
-		// If changes are made to the tests/unit/schema directory this test requires updates
-		$countFiles = $this->object->countFiles(JPATH_TESTS . '/schema');
-		$this->assertSame(array(4, 0), $countFiles);
+		$countFiles = $this->object->countFiles(JPATH_LIBRARIES . '/phputf8');
+		$this->assertSame(array(2, 3), $countFiles);
 	}
 
 	/**

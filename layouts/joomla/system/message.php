@@ -11,33 +11,25 @@ defined('JPATH_BASE') or die;
 
 $msgList = $displayData['msgList'];
 
-$alert = [
-	JApplicationCms::MSG_EMERGENCY => 'danger',
-	JApplicationCms::MSG_ALERT     => 'danger',
-	JApplicationCms::MSG_CRITICAL  => 'danger',
-	JApplicationCms::MSG_ERROR     => 'danger',
-	JApplicationCms::MSG_WARNING   => 'warning',
-	JApplicationCms::MSG_NOTICE    => 'info',
-	JApplicationCms::MSG_INFO      => 'info',
-	JApplicationCms::MSG_DEBUG     => 'info',
-];
-
 ?>
 <div id="system-message-container">
-	<div id="system-message">
-		<?php if (is_array($msgList) && !empty($msgList)) : ?>
+	<?php if (is_array($msgList) && !empty($msgList)) : ?>
+		<div id="system-message">
 			<?php foreach ($msgList as $type => $msgs) : ?>
-				<joomla-alert level="<?php echo isset($alert[$type]) ? $alert[$type] : $type; ?>" dismiss="true">
+				<div class="alert alert-<?php echo $type; ?>">
+					<?php // This requires JS so we should add it through JS. Progressive enhancement and stuff. ?>
+					<a class="close" data-dismiss="alert">×</a>
+
 					<?php if (!empty($msgs)) : ?>
-						<h4><?php echo JText::_($type); ?></h4>
+						<h4 class="alert-heading"><?php echo JText::_($type); ?></h4>
 						<div>
 							<?php foreach ($msgs as $msg) : ?>
-								<div><?php echo $msg; ?></div>
+								<div class="alert-message"><?php echo $msg; ?></div>
 							<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
-				</joomla-alert>
+				</div>
 			<?php endforeach; ?>
-		<?php endif; ?>
-	</div>
+		</div>
+	<?php endif; ?>
 </div>

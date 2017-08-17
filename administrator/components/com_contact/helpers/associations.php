@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Association\AssociationExtensionHelper;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Table\Table;
+
+JTable::addIncludePath(__DIR__ . '/../tables');
 
 /**
  * Content associations helper.
@@ -71,7 +71,7 @@ class ContactAssociationsHelper extends AssociationExtensionHelper
 		}
 
 		// Get the associations.
-		$associations = Associations::getAssociations(
+		$associations = JLanguageAssociations::getAssociations(
 			$this->extension,
 			$type['tables']['a'],
 			$context,
@@ -90,7 +90,7 @@ class ContactAssociationsHelper extends AssociationExtensionHelper
 	 * @param   string  $typeName  The item type
 	 * @param   int     $id        The id of item for which we need the associated items
 	 *
-	 * @return  Table|null
+	 * @return  JTable|null
 	 *
 	 * @since   3.7.0
 	 */
@@ -106,11 +106,11 @@ class ContactAssociationsHelper extends AssociationExtensionHelper
 		switch ($typeName)
 		{
 			case 'contact':
-				$table = Table::getInstance('Contact', 'Joomla\\Component\\Contact\\Administrator\\Table\\');
+				$table = JTable::getInstance('Contact', 'ContactTable');
 				break;
 
 			case 'category':
-				$table = Table::getInstance('Category');
+				$table = JTable::getInstance('Category');
 				break;
 		}
 

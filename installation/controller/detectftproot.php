@@ -32,14 +32,20 @@ class InstallationControllerDetectftproot extends JControllerBase
 		// Check for request forgeries.
 		JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
 
+		// Get the setup model.
+		$model = new InstallationModelSetup;
+
 		// Get the data
 		$data = $app->input->post->get('jform', array(), 'array');
 
 		// Store the options in the session.
-		$vars = (new InstallationModelSetup)->storeOptions($data);
+		$vars = $model->storeOptions($data);
+
+		// Get the database model.
+		$ftp = new InstallationModelFtp;
 
 		// Attempt to detect the Joomla root from the ftp account.
-		$return = (new InstallationModelFtp)->detectFtpRoot($vars);
+		$return = $ftp->detectFtpRoot($vars);
 
 		// Build the response object
 		$r = new stdClass;

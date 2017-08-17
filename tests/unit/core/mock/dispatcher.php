@@ -6,10 +6,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use Joomla\Event\DispatcherInterface;
-
 /**
- * Class to mock DispatcherInterface.
+ * Class to mock JEventDispatcher.
  *
  * @package  Joomla.Test
  * @since    12.1
@@ -33,9 +31,9 @@ class TestMockDispatcher
 	public static $triggered = array();
 
 	/**
-	 * Creates and instance of the mock DispatcherInterface object.
+	 * Creates and instance of the mock JEventDispatcher object.
 	 *
-	 * @param   PHPUnit_Framework_TestCase  $test      A test object.
+	 * @param   PHPUnit_Framework_TestCase  $test        A test object.
 	 * @param   boolean                     $defaults  True to create the default mock handlers and triggers.
 	 *
 	 * @return  PHPUnit_Framework_MockObject_MockObject
@@ -45,23 +43,23 @@ class TestMockDispatcher
 	public static function create($test, $defaults = true)
 	{
 		// Clear the static tracker properties.
-		self::$handlers  = array();
+		self::$handlers = array();
 		self::$triggered = array();
 
-		// Collect all the relevant methods in DispatcherInterface.
+		// Collect all the relevant methods in JEventDispatcher.
 		$methods = array(
-			'addListener',
-			'dispatch',
 			'register',
-			'removeListener',
 			'trigger',
 			'test',
 		);
 
-		// Create the mock.
-		$mockObject = $test->getMockBuilder(DispatcherInterface::class)
-			->setMethods($methods)
-			->getMock();
+		// Build the mock object.
+		$mockObject = $test->getMockBuilder('JEventDispatcher')
+					->setMethods($methods)
+					->setConstructorArgs(array())
+					->setMockClassName('')
+					->disableOriginalConstructor()
+					->getMock();
 
 		// Mock selected methods.
 		$test->assignMockReturns(
@@ -76,44 +74,22 @@ class TestMockDispatcher
 			$test->assignMockCallbacks(
 				$mockObject,
 				array(
-					'dispatch'     => array(get_called_class(), 'mockDispatch'),
-					'addListener'  => array(get_called_class(), 'mockRegister'),
+					'register' => array(get_called_class(), 'mockRegister'),
+					'trigger' => array(get_called_class(), 'mockTrigger'),
 				)
 			);
+
 		}
 
 		return $mockObject;
 	}
 
 	/**
-	 * Callback for the DispatcherInterface register method.
+	 * Callback for the JEventDispatcher register method.
 	 *
-	 * @param   string  $event  Name of the event to register handler for.
-	 * @param   array   $args   An array of arguments.
-	 *
-	 * @return  array  An array of results from each function call.
-	 *
-	 * @since   11.3
-	 */
-	public static function mockDispatch($event, $args = [])
-	{
-		// Track the events that were triggered, in order.
-		self::$triggered[] = $event;
-
-		if (!empty(self::$handlers[$event]))
-		{
-			return self::$handlers[$event];
-		}
-
-		return array();
-	}
-
-	/**
-	 * Callback for the DispatcherInterface register method.
-	 *
-	 * @param   string    $event    Name of the event to register handler for.
-	 * @param   callable  $handler  Callback
-	 * @param   mixed     $return   The mock value to return for the given event handler.
+	 * @param   string  $event    Name of the event to register handler for.
+	 * @param   string  $handler  Name of the event handler.
+	 * @param   mixed   $return   The mock value to return for the given event handler.
 	 *
 	 * @return  void
 	 *
@@ -123,22 +99,32 @@ class TestMockDispatcher
 	{
 		if (empty(self::$handlers[$event]))
 		{
-			self::$handlers[$event] = [];
+			self::$handlers[$event] = array();
 		}
 
-		if (is_a($handler, 'closure') || is_object($handler))
+		self::$handlers[$event][(string) $handler] = $return;
+	}
+
+	/**
+	 * Callback for the JEventDispatcher trigger method.
+	 *
+	 * @param   string  $event  The event to trigger.
+	 * @param   array   $args   An array of arguments.
+	 *
+	 * @return  array  An array of results from each function call.
+	 *
+	 * @since  11.3
+	 */
+	public static function mockTrigger($event, $args = array())
+	{
+		if (isset(self::$handlers[$event]))
 		{
-			$identifier = spl_object_hash($handler);
-		}
-		elseif (is_array($handler) && count($handler) == 2 && is_object($handler[0]))
-		{
-			$identifier = spl_object_hash($handler[0]) . '::' . $handler[1];
-		}
-		else
-		{
-			throw new InvalidArgumentException('The handler is not a valid callable.');
+			// Track the events that were triggered, in order.
+			self::$triggered[] = $event;
+
+			return self::$handlers[$event];
 		}
 
-		self::$handlers[$event][$identifier] = $return;
+		return array();
 	}
 }

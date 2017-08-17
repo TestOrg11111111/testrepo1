@@ -9,12 +9,11 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\Finder\Site\Helper\FinderHelper;
-use Joomla\CMS\Factory;
-
 JLoader::register('FinderHelperRoute', JPATH_SITE . '/components/com_finder/helpers/route.php');
 JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
+
+// Include the helper.
+JLoader::register('ModFinderHelper', __DIR__ . '/helper.php');
 
 if (!defined('FINDER_PATH_INDEXER'))
 {
@@ -28,13 +27,19 @@ if ($params->get('opensearch', 1))
 {
 /*
 This code intentionally commented
-	$ostitle = $params->get('opensearch_title', JText::_('MOD_FINDER_SEARCHBUTTON_TEXT') . ' ' . Factory::getApplication()->get('sitename'));
-	Factory::getDocument()->addHeadLink(
-		JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('&option=com_finder&format=opensearch'),
-		'search', 'rel', array('title' => $ostitle, 'type' => 'application/opensearchdescription+xml')
-	);
+	$doc = JFactory::getDocument();
+	$app = JFactory::getApplication();
+
+	$ostitle = $params->get('opensearch_title', JText::_('MOD_FINDER_SEARCHBUTTON_TEXT') . ' ' . $app->get('sitename'));
+	$doc->addHeadLink(
+						JUri::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('&option=com_finder&format=opensearch'),
+						'search', 'rel', array('title' => $ostitle, 'type' => 'application/opensearchdescription+xml')
+					);
 */
 }
+
+// Initialize module parameters.
+$params->def('field_size', 20);
 
 // Get the route.
 $route = FinderHelperRoute::getSearchRoute($params->get('searchfilter', null));
@@ -46,6 +51,6 @@ FinderHelperLanguage::loadComponentLanguage();
 FinderHelperLanguage::loadPluginLanguage();
 
 // Get Smart Search query object.
-$query = FinderHelper::getQuery($params);
+$query = ModFinderHelper::getQuery($params);
 
-require ModuleHelper::getLayoutPath('mod_finder', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_finder', $params->get('layout', 'default'));

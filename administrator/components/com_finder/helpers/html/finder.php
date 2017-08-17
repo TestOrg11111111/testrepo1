@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Component\Finder\Administrator\Helper\FinderHelperLanguage;
+JLoader::register('FinderHelperLanguage', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/language.php');
 
 use Joomla\Utilities\ArrayHelper;
 

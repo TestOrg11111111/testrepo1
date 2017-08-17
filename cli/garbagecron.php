@@ -6,6 +6,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+/**
+ * A command line cron job to trash expired cache data.
+ */
+
 // Initialize Joomla framework
 const _JEXEC = 1;
 
@@ -22,14 +26,17 @@ if (!defined('_JDEFINES'))
 }
 
 // Get the framework.
-require_once JPATH_BASE . '/includes/framework.php';
+require_once JPATH_LIBRARIES . '/import.legacy.php';
+
+// Bootstrap the CMS libraries.
+require_once JPATH_LIBRARIES . '/cms.php';
 
 /**
  * Cron job to trash expired cache data.
  *
  * @since  2.5
  */
-class GarbageCron extends \Joomla\CMS\Application\CliApplication
+class GarbageCron extends JApplicationCli
 {
 	/**
 	 * Entry point for the script
@@ -38,28 +45,11 @@ class GarbageCron extends \Joomla\CMS\Application\CliApplication
 	 *
 	 * @since   2.5
 	 */
-	protected function doExecute()
+	public function doExecute()
 	{
-		JFactory::getCache()->gc();
+		$cache = JFactory::getCache();
+		$cache->gc();
 	}
 }
 
-// Set up the container
-JFactory::getContainer()->share(
-	'GarbageCron',
-	function (\Joomla\DI\Container $container)
-	{
-		return new GarbageCron(
-			null,
-			null,
-			null,
-			null,
-			$container->get(\Joomla\Event\DispatcherInterface::class),
-			$container
-		);
-	},
-	true
-);
-$app = JFactory::getContainer()->get('GarbageCron');
-JFactory::$application = $app;
-$app->execute();
+JApplicationCli::getInstance('GarbageCron')->execute();

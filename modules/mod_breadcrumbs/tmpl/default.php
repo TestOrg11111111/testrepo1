@@ -9,16 +9,17 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
 ?>
 
-<ul itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
+<ul itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb<?php echo $moduleclass_sfx; ?>">
 	<?php if ($params->get('showHere', 1)) : ?>
-		<li class="float-left">
+		<li>
 			<?php echo JText::_('MOD_BREADCRUMBS_HERE'); ?>&#160;
 		</li>
 	<?php else : ?>
-		<li class="float-left">
-			<span class="divider fa fa-location" aria-hidden="true"></span>
+		<li class="active">
+			<span class="divider icon-location"></span>
 		</li>
 	<?php endif; ?>
 
@@ -44,19 +45,29 @@ defined('_JEXEC') or die;
 	// Generate the trail
 	foreach ($list as $key => $item) :
 		if ($key !== $last_item_key) :
-			if (!empty($item->link)) :
-				$breadcrumbItem = '<a itemprop="item" href="' . $item->link . '" class="pathway"><span itemprop="name">' . $item->name . '</span></a>';
-			else :
-				$breadcrumbItem = '<span itemprop="name">' . $item->name . '</span>';
-			endif;
 			// Render all but last item - along with separator ?>
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item"><?php echo $breadcrumbItem; ?>
+			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+				<?php if (!empty($item->link)) : ?>
+					<a itemprop="item" href="<?php echo $item->link; ?>" class="pathway"><span itemprop="name"><?php echo $item->name; ?></span></a>
+				<?php else : ?>
+					<span itemprop="name">
+						<?php echo $item->name; ?>
+					</span>
+				<?php endif; ?>
+
+				<?php if (($key !== $penult_item_key) || $show_last) : ?>
+					<span class="divider">
+						<?php echo $separator; ?>
+					</span>
+				<?php endif; ?>
 				<meta itemprop="position" content="<?php echo $key + 1; ?>">
 			</li>
 		<?php elseif ($show_last) :
-			$breadcrumbItem = '<span itemprop="name">' . $item->name . '</span>';
 			// Render last item if reqd. ?>
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active"><?php echo $breadcrumbItem; ?>
+			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="active">
+				<span itemprop="name">
+					<?php echo $item->name; ?>
+				</span>
 				<meta itemprop="position" content="<?php echo $key + 1; ?>">
 			</li>
 		<?php endif;

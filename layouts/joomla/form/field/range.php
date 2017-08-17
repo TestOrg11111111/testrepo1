@@ -44,9 +44,13 @@ extract($displayData);
  * @var   string   $accept          File types that are accepted.
  */
 
+// Including fallback code for HTML5 non supported browsers.
+JHtml::_('jquery.framework');
+JHtml::_('script', 'system/html5fallback.js', array('version' => 'auto', 'relative' => true));
+
 // Initialize some field attributes.
 $attributes = array(
-	$class ? 'class="form-control ' . $class . '"' : 'class="form-control"',
+	$class ? 'class="' . $class . '"' : '',
 	$disabled ? 'disabled' : '',
 	$readonly ? 'readonly' : '',
 	!empty($onchange) ? 'onchange="' . $onchange . '"' : '',
@@ -60,9 +64,8 @@ $value = (float) $value;
 $value = empty($value) ? $min : $value;
 
 ?>
-<input
-	type="range"
-	name="<?php echo $name; ?>"
-	id="<?php echo $id; ?>"
-	value="<?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>"
-	<?php echo implode(' ', $attributes); ?>>
+<input type="range" name="<?php
+echo $name; ?>" id="<?php
+echo $id; ?>" value="<?php
+echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?>" <?php
+echo implode(' ', $attributes); ?> />

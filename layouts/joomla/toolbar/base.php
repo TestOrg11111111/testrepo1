@@ -8,6 +8,7 @@
  */
 
 defined('JPATH_BASE') or die;
-
 ?>
-<?php echo $displayData['action']; ?>
+<div class="btn-wrapper" <?php echo $displayData['id']; ?>>
+	<?php echo $displayData['action']; ?>
+</div>

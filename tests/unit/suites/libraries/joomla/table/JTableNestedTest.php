@@ -801,13 +801,9 @@ class JTableNestedTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
- 		$this->saveFactoryState();
+// 		$this->saveFactoryState();
 
-		$mockApp = $this->getMockCmsApp();
-		$mockApp->expects($this->any())
-			->method('getDispatcher')
-			->willReturn($this->getMockDispatcher());
-		JFactory::$application = $mockApp;
+// 		JFactory::$session = $this->getMockSession();
 
 		$this->class = new NestedTable(self::$driver);
 	}
@@ -823,9 +819,8 @@ class JTableNestedTest extends TestCaseDatabase
 	 */
 	protected function tearDown()
 	{
+// 		$this->restoreFactoryState();
 		unset($this->class);
- 		$this->restoreFactoryState();
-
 		parent::tearDown();
 	}
 }

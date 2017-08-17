@@ -9,14 +9,15 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Component\Banners\Administrator\Helper\BannersHelper;
-use Joomla\Module\Banners\Site\Helper\ModBannersHelper;
+// Include the banners functions only once
+JLoader::register('ModBannersHelper', __DIR__ . '/helper.php');
 
 $headerText = trim($params->get('header_text'));
 $footerText = trim($params->get('footer_text'));
 
+JLoader::register('BannersHelper', JPATH_ADMINISTRATOR . '/components/com_banners/helpers/banners.php');
 BannersHelper::updateReset();
 $list = &ModBannersHelper::getList($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_banners', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_banners', $params->get('layout', 'default'));

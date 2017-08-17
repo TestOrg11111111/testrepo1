@@ -25,6 +25,8 @@ abstract class JHtmlBanner
 	 */
 	public static function clients()
 	{
+		JHtml::_('bootstrap.tooltip');
+
 		// Create the batch selector to change the client on a selection list.
 		return implode(
 			"\n",
@@ -34,7 +36,7 @@ abstract class JHtmlBanner
 					. '">',
 				JText::_('COM_BANNERS_BATCH_CLIENT_LABEL'),
 				'</label>',
-				'<select class="custom-select" name="batch[client_id]" id="batch-client-id">',
+				'<select name="batch[client_id]" id="batch-client-id">',
 				'<option value="">' . JText::_('COM_BANNERS_BATCH_CLIENT_NOCHANGE') . '</option>',
 				'<option value="0">' . JText::_('COM_BANNERS_NO_CLIENT') . '</option>',
 				JHtml::_('select.options', static::clientlist(), 'value', 'text'),

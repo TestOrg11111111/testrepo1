@@ -9,11 +9,12 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\Languages\Site\Helper\LanguagesHelper;
+// Include the languages functions only once
+JLoader::register('ModLanguagesHelper', __DIR__ . '/helper.php');
 
 $headerText      = $params->get('header_text');
 $footerText      = $params->get('footer_text');
-$list            = LanguagesHelper::getList($params);
+$list            = ModLanguagesHelper::getList($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-require ModuleHelper::getLayoutPath('mod_languages', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_languages', $params->get('layout', 'default'));

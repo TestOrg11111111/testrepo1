@@ -10,7 +10,5 @@
 defined('_JEXEC') or die;
 ?>
 <?php if (!empty($version)) : ?>
-<div class="d-flex align-items-center">
-	<p class="joomla-version"><?php echo $version; ?></p>
-</div>
+	<p class="text-center"><?php echo $version; ?></p>
 <?php endif; ?>

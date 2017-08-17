@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+JHtml::_('bootstrap.tooltip');
+
 $tooltip = $displayData['tooltip'];
 $legacy  = $displayData['legacy'];
 
@@ -19,6 +21,6 @@ $legacy  = $displayData['legacy'];
 	</span>
 	<?php echo JText::_('JLIB_HTML_CHECKED_OUT'); ?>
 <?php else : ?>
-	<span class="hasTooltip fa fa-lock" title="<?php echo JHtml::tooltipText($tooltip . '', 0); ?>"></span>
+	<span class="hasTooltip icon-lock" title="<?php echo JHtml::tooltipText($tooltip . '', 0); ?>"></span>
 	<?php echo JText::_('JLIB_HTML_CHECKED_OUT'); ?>
 <?php endif; ?>

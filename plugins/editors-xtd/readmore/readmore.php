@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Event\Event;
-
 /**
  * Editor Readmore button
  *
@@ -31,34 +29,26 @@ class PlgButtonReadmore extends JPlugin
 	 *
 	 * @param   string  $name  The name of the button to add
 	 *
-	 * @return  JObject  $button  A two element array of (imageName, textToInsert)
+	 * @return  JObject  The button options as JObject
 	 *
 	 * @since   1.5
 	 */
 	public function onDisplay($name)
 	{
-		// Button is not active in specific content components
-		$event = new Event(
-			'getContent',
-			['name' => $name]
-		);
-
-		$getContentResult = $this->getDispatcher()->dispatch('getContent', $event);
-		$getContent = $getContentResult['result'][0];
 		JHtml::_('script', 'com_content/admin-article-readmore.min.js', array('version' => 'auto', 'relative' => true));
 
 		// Pass some data to javascript
 		JFactory::getDocument()->addScriptOptions(
 			'xtd-readmore',
 			array(
-				'editor' => $getContent,
+				'editor' => $this->_subject->getContent($name),
 				'exists' => JText::_('PLG_READMORE_ALREADY_EXISTS', true),
 			)
 		);
 
 		$button = new JObject;
 		$button->modal   = false;
-		$button->class   = 'btn btn-secondary';
+		$button->class   = 'btn';
 		$button->onclick = 'insertReadmore(\'' . $name . '\');return false;';
 		$button->text    = JText::_('PLG_READMORE_BUTTON_READMORE');
 		$button->name    = 'arrow-down';

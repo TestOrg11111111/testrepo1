@@ -7,20 +7,30 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die;
-
 use Joomla\Application\AbstractApplication;
-use Joomla\Controller\ControllerInterface;
-use Joomla\Input\Input;
+
+defined('JPATH_PLATFORM') or die;
 
 /**
  * Joomla Platform Controller Interface
  *
- * @since       12.1
- * @deprecated  5.0  Implement Joomla\Controller\ControllerInterface instead
+ * @since  12.1
  */
-interface JController extends ControllerInterface
+interface JController extends Serializable
 {
+	/**
+	 * Execute the controller.
+	 *
+	 * @return  boolean  True if controller finished execution, false if the controller did not
+	 *                   finish execution. A controller might return false if some precondition for
+	 *                   the controller to run has not been satisfied.
+	 *
+	 * @since   12.1
+	 * @throws  LogicException
+	 * @throws  RuntimeException
+	 */
+	public function execute();
+
 	/**
 	 * Get the application object.
 	 *
@@ -33,7 +43,7 @@ interface JController extends ControllerInterface
 	/**
 	 * Get the input object.
 	 *
-	 * @return  Input  The input object.
+	 * @return  JInput  The input object.
 	 *
 	 * @since   12.1
 	 */

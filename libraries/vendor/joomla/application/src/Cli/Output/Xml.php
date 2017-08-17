@@ -11,7 +11,7 @@ namespace Joomla\Application\Cli\Output;
 use Joomla\Application\Cli\CliOutput;
 
 /**
- * Output handler for writing command line output to the stdout interface
+ * Class Xml.
  *
  * @since  1.0
  */
@@ -23,7 +23,7 @@ class Xml extends CliOutput
 	 * @param   string   $text  The text to display.
 	 * @param   boolean  $nl    True (default) to append a new line at the end of the output string.
 	 *
-	 * @return  $this
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @throws  \RuntimeException
@@ -32,7 +32,5 @@ class Xml extends CliOutput
 	public function out($text = '', $nl = true)
 	{
 		fwrite(STDOUT, $text . ($nl ? "\n" : null));
-
-		return $this;
 	}
 }

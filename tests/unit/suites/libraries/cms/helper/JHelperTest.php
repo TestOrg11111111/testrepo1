@@ -54,11 +54,7 @@ class JHelperTest extends TestCaseDatabase
 		$this->saveFactoryState();
 
 		$this->object = new JHelper;
-		$mockApp = $this->getMockCmsApp();
-		$mockApp->expects($this->any())
-			->method('getDispatcher')
-			->willReturn($this->getMockDispatcher());
-		JFactory::$application = $mockApp;
+		JFactory::$application = $this->getMockCmsApp();
 	}
 
 	/**

@@ -9,16 +9,19 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
 ?>
-<ul class="list-group list-group-flush">
+<div class="row-striped">
 	<?php if (count($list)) : ?>
 		<?php foreach ($list as $i => $item) : ?>
-			<li class="d-flex justify-content-start list-group-item <?php echo $item->state == 1 ? 'published' : 'unpublished'; ?>">
-				<div class="fg-1">
+			<div class="row-fluid">
+				<div class="span8 truncate">
+					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', false, 'cb', $item->publish_up, $item->publish_down); ?>
 					<?php if ($item->checked_out) : ?>
 						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
 					<?php endif; ?>
-					<strong class="row-title break-word mr-2" title="<?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?>">
+
+					<strong class="row-title" title="<?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?>">
 						<?php if ($item->link) : ?>
 							<a href="<?php echo $item->link; ?>">
 								<?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?></a>
@@ -26,23 +29,23 @@ defined('_JEXEC') or die;
 							<?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?>
 						<?php endif; ?>
 					</strong>
+
 					<small class="hasTooltip" title="<?php echo JHtml::_('tooltipText', 'MOD_LATEST_CREATED_BY'); ?>">
 						<?php echo $item->author_name; ?>
 					</small>
 				</div>
-				<span class="badge badge-default badge-pill">
-					<span class="small">
-						<span class="icon-calendar" aria-hidden="true"></span>
-						<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC5')); ?>
-					</span>
-				</span>
-			</li>
+				<div class="span4">
+					<div class="small pull-right hasTooltip" title="<?php echo JHtml::_('tooltipText', 'JGLOBAL_FIELD_CREATED_LABEL'); ?>">
+						<span class="icon-calendar" aria-hidden="true"></span> <?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC5')); ?>
+					</div>
+				</div>
+			</div>
 		<?php endforeach; ?>
 	<?php else : ?>
-		<li class="d-flex justify-content-start list-group-item">
-			<div class="col-md-12">
-				<div class="alert alert-info"><?php echo JText::_('MOD_LATEST_NO_MATCHING_RESULTS');?></div>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="alert"><?php echo JText::_('MOD_LATEST_NO_MATCHING_RESULTS');?></div>
 			</div>
-		</li>
+		</div>
 	<?php endif; ?>
-</ul>
+</div>

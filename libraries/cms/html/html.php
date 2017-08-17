@@ -124,15 +124,6 @@ abstract class JHtml
 			}
 		}
 
-		// If calling a method from this class, do not allow access to internal methods
-		if ($className === __CLASS__)
-		{
-			if (!((new ReflectionMethod($className, $func))->isPublic()))
-			{
-				throw new InvalidArgumentException('Access to internal class methods is not allowed.');
-			}
-		}
-
 		$toCall = array($className, $func);
 
 		if (!is_callable($toCall))
@@ -152,20 +143,25 @@ abstract class JHtml
 	/**
 	 * Registers a function to be called with a specific key
 	 *
-	 * @param   string    $key       The name of the key
-	 * @param   callable  $function  Function or method
+	 * @param   string  $key       The name of the key
+	 * @param   string  $function  Function or method
 	 *
 	 * @return  boolean  True if the function is callable
 	 *
 	 * @since   1.6
 	 */
-	public static function register($key, callable $function)
+	public static function register($key, $function)
 	{
 		list($key) = static::extract($key);
 
-		static::$registry[$key] = $function;
+		if (is_callable($function))
+		{
+			static::$registry[$key] = $function;
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -219,8 +215,13 @@ abstract class JHtml
 	 * @since   1.6
 	 * @throws  InvalidArgumentException
 	 */
-	protected static function call(callable $function, $args)
+	protected static function call($function, $args)
 	{
+		if (!is_callable($function))
+		{
+			throw new InvalidArgumentException('Function not supported', 500);
+		}
+
 		// PHP 5.3 workaround
 		$temp = array();
 
@@ -399,7 +400,7 @@ abstract class JHtml
 					}
 					else
 					{
-						// If the file contains any /: it can be in an media extension subfolder
+						// If the file contains any /: it can be in a media extension subfolder
 						if (strpos($file, '/'))
 						{
 							// Divide the file extracting the extension as the first part before /
@@ -580,7 +581,7 @@ abstract class JHtml
 			return $file;
 		}
 
-		return '<img src="' . $file . '" alt="' . $alt . '" ' . trim((is_array($attribs) ? ArrayHelper::toString($attribs) : $attribs)) . '>';
+		return '<img src="' . $file . '" alt="' . $alt . '" ' . trim((is_array($attribs) ? ArrayHelper::toString($attribs) : $attribs) . ' /') . '>';
 	}
 
 	/**
@@ -732,74 +733,6 @@ abstract class JHtml
 			}
 
 			$document->addScript($include, $options, $attribs);
-		}
-	}
-
-	/**
-	 * Loads the name and path of a custom element or webcomponent into the scriptOptions object
-	 *
-	 * @param   array  $component  The name and path of the web component.
-	 *                             Also passing a key = fullPolyfill and value= true we force the whole polyfill instead
-	 *                             of just the custom element. (Polyfills loaded as needed, no force load)
-	 * @param   array  $options    The relative, version, detect browser and detect debug options for the custom element
-	 *                             or web component. Files need to have a -es5(.min).js (or -es5(.min).html) for the non ES6
-	 *                             Browsers.
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 *
-	 * @return  void
-	 */
-	public static function webcomponent($component = [], $options = [])
-	{
-		if (empty($component))
-		{
-			return;
-		}
-
-		// Script core.js is responsible for the polyfills and the async loading of the web components
-		static::_('behavior.core');
-
-		foreach ($component as $key => $value)
-		{
-			if ($key === 'fullPolyfill' && $value === true)
-			{
-				JFactory::getDocument()->addScriptOptions('webcomponents', ['fullPolyfill' => true]);
-				continue;
-			}
-			$version      = '';
-			$mediaVersion = \JFactory::getDocument()->getMediaVersion();
-			$includes     = static::includeRelativeFiles(
-				'webcomponents',
-				$value,
-				isset($options['relative']) ? $options['relative'] : true,
-				isset($options['detectBrowser']) ? $options['detectBrowser'] : false,
-				isset($options['detectDebug']) ? $options['detectDebug'] : false
-			);
-
-			if (count($includes) === 0)
-			{
-				continue;
-			}
-
-			if (isset($options['version']))
-			{
-				if ($options['version'] === 'auto')
-				{
-					$version = '?' . $mediaVersion;
-				}
-				else
-				{
-					$version = '?' . $options['version'];
-				}
-			}
-
-			if (count($includes) === 1)
-			{
-				JFactory::getDocument()->addScriptOptions('webcomponents', [$key => $includes[0] . ((strpos($includes[0], '?') === false) ? $version : '')]);
-				continue;
-			}
-
-			JFactory::getDocument()->addScriptOptions('webcomponents', [$key => $includes . ((strpos($includes, '?') === false) ? $version : '')]);
 		}
 	}
 
@@ -1016,7 +949,7 @@ abstract class JHtml
 			// Use a formatted string combining the title and content.
 			elseif ($content !== '')
 			{
-				$result = '<strong>' . $title . '</strong><br>' . $content;
+				$result = '<strong>' . $title . '</strong><br />' . $content;
 			}
 			else
 			{

@@ -9,6 +9,7 @@
 namespace Joomla\Image\Filter;
 
 use Joomla\Image\ImageFilter;
+use InvalidArgumentException;
 
 /**
  * Image Filter class fill background with color;
@@ -26,59 +27,62 @@ class Backgroundfill extends ImageFilter
 	 * @return  void
 	 *
 	 * @since   1.0
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 */
-	public function execute(array $options = [])
+	public function execute(array $options = array())
 	{
 		// Validate that the color value exists and is an integer.
 		if (!isset($options['color']))
 		{
-			throw new \InvalidArgumentException('No color value was given. Expected string or array.');
+			throw new InvalidArgumentException('No color value was given. Expected string or array.');
 		}
 
 		$colorCode = (!empty($options['color'])) ? $options['color'] : null;
 
 		// Get resource dimensions
-		$width = imagesx($this->handle);
-		$height = imagesy($this->handle);
+		$width = imagesX($this->handle);
+		$height = imagesY($this->handle);
 
 		// Sanitize color
 		$rgba = $this->sanitizeColor($colorCode);
 
 		// Enforce alpha on source image
-		if (imageistruecolor($this->handle))
+		if (imageIsTrueColor($this->handle))
 		{
-			imagealphablending($this->handle, false);
-			imagesavealpha($this->handle, true);
+			imageAlphaBlending($this->handle, false);
+			imageSaveAlpha($this->handle, true);
 		}
 
 		// Create background
-		$bg = imagecreatetruecolor($width, $height);
-		imagesavealpha($bg, empty($rgba['alpha']));
+		$bg = imageCreateTruecolor($width, $height);
+		imageSaveAlpha($bg, empty($rgba['alpha']));
 
 		// Allocate background color.
-		$color = imagecolorallocatealpha($bg, $rgba['red'], $rgba['green'], $rgba['blue'], $rgba['alpha']);
+		$color = imageColorAllocateAlpha($bg, $rgba['red'], $rgba['green'], $rgba['blue'], $rgba['alpha']);
 
 		// Fill background
-		imagefill($bg, 0, 0, $color);
+		imageFill($bg, 0, 0, $color);
 
 		// Apply image over background
-		imagecopy($bg, $this->handle, 0, 0, 0, 0, $width, $height);
+		imageCopy($bg, $this->handle, 0, 0, 0, 0, $width, $height);
 
 		// Move flattened result onto curent handle.
 		// If handle was palette-based, it'll stay like that.
-		imagecopy($this->handle, $bg, 0, 0, 0, 0, $width, $height);
+		imageCopy($this->handle, $bg, 0, 0, 0, 0, $width, $height);
 
 		// Free up memory
-		imagedestroy($bg);
+		imageDestroy($bg);
 
 		return;
 	}
 
 	/**
-	 * Method to sanitize color values and/or convert to an array
+	 * Method to sanitize color values
+	 * and/or convert to an array
 	 *
-	 * @param   mixed  $input  Associative array of colors and alpha, or hex RGBA string when alpha FF is opaque. Defaults to black and opaque alpha.
+	 * @param   mixed  $input  Associative array of colors and alpha,
+	 *                         or hex RGBA string when alpha FF is opaque.
+	 *                         Defaults to black and opaque alpha
 	 *
 	 * @return  array  Associative array of red, green, blue and alpha
 	 *
@@ -89,7 +93,7 @@ class Backgroundfill extends ImageFilter
 	protected function sanitizeColor($input)
 	{
 		// Construct default values
-		$colors = ['red' => 0, 'green' => 0, 'blue' => 0, 'alpha' => 0];
+		$colors = array('red' => 0, 'green' => 0, 'blue' => 0, 'alpha' => 0);
 
 		// Make sure all values are in
 		if (is_array($input))
@@ -101,12 +105,12 @@ class Backgroundfill extends ImageFilter
 		{
 			$hex = ltrim($input, '#');
 
-			$hexValues = [
-				'red'   => substr($hex, 0, 2),
+			$hexValues = array(
+				'red' => substr($hex, 0, 2),
 				'green' => substr($hex, 2, 2),
-				'blue'  => substr($hex, 4, 2),
+				'blue' => substr($hex, 4, 2),
 				'alpha' => substr($hex, 6, 2),
-			];
+			);
 
 			$colors = array_map('hexdec', $hexValues);
 

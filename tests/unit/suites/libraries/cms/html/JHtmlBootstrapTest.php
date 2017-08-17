@@ -70,6 +70,34 @@ class JHtmlBootstrapTest extends TestCase
 	}
 
 	/**
+	 * Tests the affix method.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.6.0
+	 */
+	public function testAffix()
+	{
+		// Initialise the affix script
+		JHtmlBootstrap::affix();
+
+		// Get the document instance
+		$document = JFactory::getDocument();
+
+		$this->assertArrayHasKey(
+			'/media/jui/js/bootstrap.min.js',
+			$document->_scripts,
+			'Verify that the alert method initialises Bootstrap as well'
+		);
+
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $("#affix").affix({"offset": 10}); });',
+			'Verify that the affix script is initialised'
+		);
+	}
+
+	/**
 	 * Tests the alert method.
 	 *
 	 * @return  void
@@ -85,21 +113,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".alert").alert(); });',
+			'Verify that the alert script is initialised'
 		);
 	}
 
@@ -119,21 +141,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the button method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".button").button(); });',
+			'Verify that the button script is initialised'
 		);
 	}
 
@@ -153,21 +169,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".carousel").carousel({"interval": 5000,"pause": "hover"}); });',
+			'Verify that the carousel script is initialised'
 		);
 	}
 
@@ -187,21 +197,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the dropdown method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".dropdown-toggle").dropdown(); });',
+			'Verify that the dropdown script is initialised'
 		);
 	}
 
@@ -221,27 +225,43 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/jquery/js/jquery.min.js',
+			'/media/jui/js/jquery.min.js',
 			$document->_scripts,
 			'Verify that Bootstrap initializes jQuery as well'
 		);
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that Bootstrap initializes Bootstrap'
 		);
+	}
+
+	/**
+	 * Tests the modal method.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.6.0
+	 */
+	public function testModal()
+	{
+		// Initialise the modal script
+		JHtmlBootstrap::modal();
+
+		// Get the document instance
+		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $("#modal").modal({"backdrop": true,"keyboard": true,"show": false,"remote": ""}); });',
+			'Verify that the modal script is initialised'
 		);
 	}
 
@@ -261,33 +281,21 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
 		// Check the modal's html structure
 		$matcher = array(
 			'id'         => 'modal',
 			'tag'        => 'div',
-			'attributes' => array('class' => 'joomla-modal modal fade'),
+			'attributes' => array('class' => 'modal hide fade'),
 			'child'      => array(
-				'attributes' => array('class' => 'modal-dialog'),
+				'attributes' => array('class' => 'modal-header'),
 				'tag' => 'div'
 			),
-			'children'   => array('count' => 1)
+			'children'   => array('count' => 2)
 		);
 
 		$this->assertTag(
@@ -313,21 +321,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the bootstrap-init.min.js is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".hasPopover").popover({"html": true,"trigger": "hover focus","container": "body"}); });',
+			'Verify that the popover script is initialised'
 		);
 	}
 
@@ -347,21 +349,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $("#navbar").scrollspy({"offset": 10}); });',
+			'Verify that the scrollspy script is initialised'
 		);
 	}
 
@@ -381,18 +377,45 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".hasTooltip").tooltip({"html": true,"container": "body"}); });',
+			'Verify that the tooltip script is initialised'
 		);
 	}
 
+	/**
+	 * Tests the typeahead method.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.6.0
+	 */
+	public function testTypeahead()
+	{
+		// Initialise the typeahead script
+		JHtmlBootstrap::typeahead();
+
+		// Get the document instance
+		$document = JFactory::getDocument();
+
+		$this->assertArrayHasKey(
+			'/media/jui/js/bootstrap.min.js',
+			$document->_scripts,
+			'Verify that the alert method initialises Bootstrap as well'
+		);
+
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $(".typeahead").typeahead({"items": 8,"minLength": 1}); });',
+			'Verify that the typeahead script is initialised'
+		);
+	}
 
 	/**
 	 * Tests the startAccordion method.
@@ -410,27 +433,22 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){' . "\n\t" . '$(\'#myAccordian\').collapse({"parent": false,"toggle": false})' . "\n" . '});',
+			'Verify that the startAccordion script is initialised'
 		);
 
 		// Check the modal's html structure
 		$matcher = array(
 			'id'         => 'myAccordian',
 			'tag'        => 'div',
+			'attributes' => array('class' => 'accordion')
 		);
 
 		$this->assertTag(
@@ -474,30 +492,24 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){' . "\n\t" . '$(\'#myAccordian\').collapse({"parent": false,"toggle": false})' . "\n" . '});',
+			'Verify that the addSlide script is initialised'
 		);
 
 		// Check the modal's html structure
 		$matcher = array(
 			'tag'        => 'div',
-			'attributes' => array('class' => 'card'),
+			'attributes' => array('class' => 'accordion-group'),
 			'child'      => array(
-				'tag'        => 'a',
-				'attributes' => array('class' => 'card-header')
+				'tag'        => 'div',
+				'attributes' => array('class' => 'accordion-heading')
 			)
 		);
 
@@ -536,21 +548,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/tether/js/tether.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that tether.js is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
-			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
-		);
-
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			'jQuery(function($){ $("#myTab a").click(function (e) {e.preventDefault();$(this).tab("show");});});',
+			'Verify that the startTabSet script is initialised'
 		);
 
 		// Check the tab set's html structure
@@ -597,15 +603,20 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/js/bootstrap.min.js',
+			'/media/jui/js/bootstrap.min.js',
 			$document->_scripts,
-			'Verify that bootstrap.min.js file is loaded'
+			'Verify that the alert method initialises Bootstrap as well'
 		);
 
-		$this->assertArrayHasKey(
-			'/media/system/js/bootstrap-init.min.js',
-			$document->_scripts,
-			'Verify that the boostrap-init.min.js file is loaded'
+		$li = "<li class=\\\"\\\"><a href=\\\"#myTabItem\\\" data-toggle=\\\"tab\\\">myTitle<\/a><\/li>";
+		$script = 'jQuery(function($){ $("#myTab a").click(function (e) {e.preventDefault();$(this).tab("show");});});';
+		$script .= chr(13);
+		$script .= 'jQuery(function($){ $("#myTabTabs").append($("' . $li . '")); });';
+
+		$this->assertEquals(
+			$document->_script['text/javascript'],
+			$script,
+			'Verify that the startTabSet script is initialised'
 		);
 
 		// Check the tab set's html structure
@@ -634,6 +645,29 @@ class JHtmlBootstrapTest extends TestCase
 		$this->assertEquals("\n</div>", JHtmlBootstrap::endTabSet());
 	}
 
+	/**
+	 * Tests the endPane method
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public function testEndPane()
+	{
+		$this->assertEquals('</div>', JHtmlBootstrap::endPane());
+	}
+
+	/**
+	 * Tests the endPanel method
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public function testEndPanel()
+	{
+		$this->assertEquals('</div>', JHtmlBootstrap::endPanel());
+	}
 
 	/**
 	 * Tests the loadCss method.
@@ -651,15 +685,15 @@ class JHtmlBootstrapTest extends TestCase
 		$document = JFactory::getDocument();
 
 		$this->assertArrayHasKey(
-			'/media/vendor/bootstrap/css/bootstrap.min.css',
+			'/media/jui/css/bootstrap.min.css',
 			$document->_styleSheets,
 			'Verify that the base Bootstrap CSS is loaded'
 		);
 
-//		$this->assertArrayHasKey(
-//			'/media/vendor/bootstrap/css/bootstrap-rtl.css',
-//			$document->_styleSheets,
-//			'Verify that the RTL Bootstrap CSS is loaded'
-//		);
+		$this->assertArrayHasKey(
+			'/media/jui/css/bootstrap-rtl.css',
+			$document->_styleSheets,
+			'Verify that the RTL Bootstrap CSS is loaded'
+		);
 	}
 }

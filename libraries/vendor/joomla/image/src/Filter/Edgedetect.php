@@ -26,7 +26,7 @@ class Edgedetect extends ImageFilter
 	 *
 	 * @since   1.0
 	 */
-	public function execute(array $options = [])
+	public function execute(array $options = array())
 	{
 		// Perform the edge detection filter.
 		imagefilter($this->handle, IMG_FILTER_EDGEDETECT);

@@ -1,3 +1,7 @@
+#finder-indexer-container {
+	text-align: center;
+}
+
 #finder-progress-container {
 	width: 350px;
 	margin: 0 auto;
@@ -9,5 +13,5 @@ h1.finder-error {
 
 p.finder-error {
 	color: #FF0000;
-	font-weight: bold;
+	font-weight:bold;
 }

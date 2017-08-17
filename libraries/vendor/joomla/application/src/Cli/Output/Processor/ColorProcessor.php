@@ -12,7 +12,7 @@ use Joomla\Application\Cli\ColorStyle;
 use Joomla\Application\Cli\Output\Stdout;
 
 /**
- * Command line output processor supporting ANSI-colored output
+ * Class ColorProcessor.
  *
  * @since  1.0
  */
@@ -45,21 +45,21 @@ class ColorProcessor implements ProcessorInterface
 	/**
 	 * Array of ColorStyle objects
 	 *
-	 * @var    ColorStyle[]
+	 * @var    array
 	 * @since  1.0
 	 */
-	protected $styles = [];
+	protected $styles = array();
 
 	/**
 	 * Class constructor
 	 *
 	 * @param   boolean  $noColors  Defines non-colored mode on construct
 	 *
-	 * @since   1.1.0
+	 * @since  1.1.0
 	 */
 	public function __construct($noColors = null)
 	{
-		if (is_null($noColors))
+		if ($noColors === null)
 		{
 			/*
 			 * By default windows cmd.exe and PowerShell does not support ANSI-colored output
@@ -79,7 +79,7 @@ class ColorProcessor implements ProcessorInterface
 	 * @param   string      $name   The style name.
 	 * @param   ColorStyle  $style  The color style.
 	 *
-	 * @return  $this
+	 * @return  ColorProcessor  Instance of $this to allow chaining.
 	 *
 	 * @since   1.0
 	 */
@@ -150,7 +150,7 @@ class ColorProcessor implements ProcessorInterface
 	 *
 	 * @since   1.0
 	 */
-	private function replaceColors($text, $tag, $match, ColorStyle $style)
+	private function replaceColors($text, $tag, $match, Colorstyle $style)
 	{
 		$replace = $this->noColors
 			? $match
@@ -162,7 +162,7 @@ class ColorProcessor implements ProcessorInterface
 	/**
 	 * Adds predefined color styles to the ColorProcessor object
 	 *
-	 * @return  $this
+	 * @return  Stdout  Instance of $this to allow chaining.
 	 *
 	 * @since   1.0
 	 */
@@ -170,12 +170,12 @@ class ColorProcessor implements ProcessorInterface
 	{
 		$this->addStyle(
 			'info',
-			new ColorStyle('green', '', ['bold'])
+			new ColorStyle('green', '', array('bold'))
 		);
 
 		$this->addStyle(
 			'comment',
-			new ColorStyle('yellow', '', ['bold'])
+			new ColorStyle('yellow', '', array('bold'))
 		);
 
 		$this->addStyle(

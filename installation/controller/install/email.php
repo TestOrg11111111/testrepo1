@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use PHPMailer\PHPMailer\Exception as phpmailerException;
-
 /**
  * Controller class to email the configuration info for the Joomla Installer.
  *
@@ -27,11 +25,9 @@ class InstallationControllerInstallEmail extends JControllerBase
 	{
 		parent::__construct();
 
-		/** @var InstallationApplicationWeb $app */
-		$app = $this->getApplication();
-
-		// Overrides application config so the send function will work
-		$app->loadConfiguration(new JConfig);
+		// Overrides application config and set the configuration.php file so the send function will work
+		JFactory::$config = null;
+		JFactory::getConfig(JPATH_SITE . '/configuration.php');
 	}
 
 	/**
@@ -50,53 +46,56 @@ class InstallationControllerInstallEmail extends JControllerBase
 		// Check for request forgeries. - @TODO - Restore this check
 		// JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
 
+		// Get the setup model.
+		$model = new InstallationModelSetup;
+
 		// Get the options from the session
-		$options = (new InstallationModelSetup)->getOptions();
+		$options = $model->getOptions();
 
 		$name    = $options['admin_user'];
 		$email   = $options['admin_email'];
 		$subject = JText::sprintf(JText::_('INSTL_EMAIL_SUBJECT'), $options['site_name']);
 
 		// Prepare email body
-		$body   = [];
+		$body = array();
 		$body[] = JText::sprintf(JText::_('INSTL_EMAIL_HEADING'), $options['site_name']);
 		$body[] = '';
-		$body[] = [JText::_('INSTL_SITE_NAME_LABEL'), $options['site_name']];
+		$body[] = array(JText::_('INSTL_SITE_NAME_LABEL'), $options['site_name']);
 
 		$body[] = $this->emailTitle(JText::_('INSTL_COMPLETE_ADMINISTRATION_LOGIN_DETAILS'));
-		$body[] = [JText::_('JEMAIL'), $options['admin_email']];
-		$body[] = [JText::_('JUSERNAME'), $options['admin_user']];
+		$body[] = array(JText::_('JEMAIL'), $options['admin_email']);
+		$body[] = array(JText::_('JUSERNAME'), $options['admin_user']);
 
 		if ($options['summary_email_passwords'])
 		{
-			$body[] = [JText::_('INSTL_ADMIN_PASSWORD_LABEL'), $options['admin_password']];
+			$body[] = array(JText::_('INSTL_ADMIN_PASSWORD_LABEL'), $options['admin_password']);
 		}
 
 		$body[] = $this->emailTitle(JText::_('INSTL_DATABASE'));
-		$body[] = [JText::_('INSTL_DATABASE_TYPE_LABEL'), $options['db_type']];
-		$body[] = [JText::_('INSTL_DATABASE_HOST_LABEL'), $options['db_host']];
-		$body[] = [JText::_('INSTL_DATABASE_USER_LABEL'), $options['db_user']];
+		$body[] = array(JText::_('INSTL_DATABASE_TYPE_LABEL'), $options['db_type']);
+		$body[] = array(JText::_('INSTL_DATABASE_HOST_LABEL'), $options['db_host']);
+		$body[] = array(JText::_('INSTL_DATABASE_USER_LABEL'), $options['db_user']);
 
 		if ($options['summary_email_passwords'])
 		{
-			$body[] = [JText::_('INSTL_DATABASE_PASSWORD_LABEL'), $options['db_pass']];
+			$body[] = array(JText::_('INSTL_DATABASE_PASSWORD_LABEL'), $options['db_pass']);
 		}
 
-		$body[] = [JText::_('INSTL_DATABASE_NAME_LABEL'), $options['db_name']];
-		$body[] = [JText::_('INSTL_DATABASE_PREFIX_LABEL'), $options['db_prefix']];
+		$body[] = array(JText::_('INSTL_DATABASE_NAME_LABEL'), $options['db_name']);
+		$body[] = array(JText::_('INSTL_DATABASE_PREFIX_LABEL'), $options['db_prefix']);
 
 		if (isset($options['ftp_enable']) && $options['ftp_enable'])
 		{
 			$body[] = $this->emailTitle(JText::_('INSTL_FTP'));
-			$body[] = [JText::_('INSTL_FTP_USER_LABEL'), $options['ftp_user']];
+			$body[] = array(JText::_('INSTL_FTP_USER_LABEL'), $options['ftp_user']);
 
 			if ($options['summary_email_passwords'])
 			{
-				$body[] = [JText::_('INSTL_FTP_PASSWORD_LABEL'), $options['ftp_pass']];
+				$body[] = array( JText::_('INSTL_FTP_PASSWORD_LABEL'), $options['ftp_pass']);
 			}
 
-			$body[] = [JText::_('INSTL_FTP_HOST_LABEL'), $options['ftp_host']];
-			$body[] = [JText::_('INSTL_FTP_PORT_LABEL'), $options['ftp_port']];
+			$body[] = array(JText::_('INSTL_FTP_HOST_LABEL'), $options['ftp_host']);
+			$body[] = array(JText::_('INSTL_FTP_PORT_LABEL'), $options['ftp_port']);
 		}
 
 		$max = 0;
@@ -105,7 +104,7 @@ class InstallationControllerInstallEmail extends JControllerBase
 		{
 			if (is_array($line))
 			{
-				$max = max([$max, strlen($line['0'])]);
+				$max = max(array($max, strlen($line['0'])));
 			}
 		}
 
@@ -124,11 +123,11 @@ class InstallationControllerInstallEmail extends JControllerBase
 		$mail = JFactory::getMailer();
 		$mail->addRecipient($email);
 		$mail->addReplyTo($email, $name);
-		$mail->setSender([$email, $name]);
+		$mail->setSender(array($email, $name));
 		$mail->setSubject($subject);
 		$mail->setBody($body);
 
-		$r       = new stdClass;
+		$r = new stdClass;
 		$r->view = 'complete';
 
 		try
@@ -138,7 +137,7 @@ class InstallationControllerInstallEmail extends JControllerBase
 				$app->enqueueMessage(JText::_('INSTL_EMAIL_NOT_SENT'), 'error');
 			}
 		}
-		catch (phpmailerException $e)
+		catch (Exception $e)
 		{
 			$app->enqueueMessage(JText::_('INSTL_EMAIL_NOT_SENT'), 'error');
 		}

@@ -15,13 +15,12 @@
 	</files>
 	<administration>
 		<files folder="admin">
-			<filename>dispatcher.php</filename>			
-			<folder>Controller</folder>
-			<folder>Helper</folder>
+			<filename>controller.php</filename>
+			<filename>contenthistory.php</filename>
+			<folder>controllers</folder>
 			<folder>helpers</folder>
-			<folder>Model</folder>
+			<folder>media</folder>
 			<folder>models</folder>
-			<folder>View</folder>
 			<folder>views</folder>
 		</files>
 		<languages folder="admin">

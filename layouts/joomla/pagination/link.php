@@ -64,6 +64,7 @@ if ($displayData['active'])
 
 	if (!is_numeric($item->text))
 	{
+		JHtml::_('bootstrap.tooltip');
 		$cssClasses[] = 'hasTooltip';
 		$title = ' title="' . $item->text . '" ';
 	}

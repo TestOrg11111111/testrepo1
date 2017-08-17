@@ -9,9 +9,9 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Component\Banners\Site\Helper\BannerHelper;
+JLoader::register('BannerHelper', JPATH_ROOT . '/components/com_banners/helpers/banner.php');
 ?>
-<div class="bannergroup">
+<div class="bannergroup<?php echo $moduleclass_sfx; ?>">
 <?php if ($headerText) : ?>
 	<?php echo $headerText; ?>
 <?php endif; ?>
@@ -28,7 +28,7 @@ use Joomla\Component\Banners\Site\Helper\BannerHelper;
 			<?php $height = $item->params->get('height'); ?>
 			<?php if (BannerHelper::isImage($imageurl)) : ?>
 				<?php // Image based banner ?>
-				<?php $baseurl = strpos($imageurl, 'http') === 0 ? '' : \JUri::base(); ?>
+				<?php $baseurl = strpos($imageurl, 'http') === 0 ? '' : JUri::base(); ?>
 				<?php $alt = $item->params->get('alt'); ?>
 				<?php $alt = $alt ?: $item->name; ?>
 				<?php $alt = $alt ?: JText::_('MOD_BANNERS_BANNER'); ?>
@@ -42,10 +42,10 @@ use Joomla\Component\Banners\Site\Helper\BannerHelper;
 							title="<?php echo htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'); ?>">
 							<img
 								src="<?php echo $baseurl . $imageurl; ?>"
-								alt="<?php echo $alt; ?>"
-								<?php if (!empty($width)) echo 'width="' . $width . '"'; ?>
-								<?php if (!empty($height)) echo 'height="' . $height . '"'; ?>
-							>
+								alt="<?php echo $alt;?>"
+								<?php if (!empty($width)) echo ' width="' . $width . '"';?>
+								<?php if (!empty($height)) echo ' height="' . $height . '"';?>
+							/>
 						</a>
 					<?php elseif ($target == 2) : ?>
 						<?php // Open in a popup window ?>
@@ -56,10 +56,10 @@ use Joomla\Component\Banners\Site\Helper\BannerHelper;
 							title="<?php echo htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'); ?>">
 							<img
 								src="<?php echo $baseurl . $imageurl; ?>"
-								alt="<?php echo $alt; ?>"
-								<?php if (!empty($width)) echo 'width="' . $width . '"'; ?>
-								<?php if (!empty($height)) echo 'height="' . $height . '"'; ?>
-							>
+								alt="<?php echo $alt;?>"
+								<?php if (!empty($width)) echo ' width="' . $width . '"';?>
+								<?php if (!empty($height)) echo ' height="' . $height . '"';?>
+							/>
 						</a>
 					<?php else : ?>
 						<?php // Open in parent window ?>
@@ -68,20 +68,20 @@ use Joomla\Component\Banners\Site\Helper\BannerHelper;
 							title="<?php echo htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'); ?>">
 							<img
 								src="<?php echo $baseurl . $imageurl; ?>"
-								alt="<?php echo $alt; ?>"
-								<?php if (!empty($width)) echo 'width="' . $width . '"'; ?>
-								<?php if (!empty($height)) echo 'height="' . $height . '"'; ?>
-							>
+								alt="<?php echo $alt;?>"
+								<?php if (!empty($width)) echo ' width="' . $width . '"';?>
+								<?php if (!empty($height)) echo ' height="' . $height . '"';?>
+							/>
 						</a>
 					<?php endif; ?>
 				<?php else : ?>
 					<?php // Just display the image if no link specified ?>
 					<img
 						src="<?php echo $baseurl . $imageurl; ?>"
-						alt="<?php echo $alt; ?>"
-						<?php if (!empty($width)) echo 'width="' . $width . '"'; ?>
-						<?php if (!empty($height)) echo 'height="' . $height . '"'; ?>
-					>
+						alt="<?php echo $alt;?>"
+						<?php if (!empty($width)) echo ' width="' . $width . '"';?>
+						<?php if (!empty($height)) echo ' height="' . $height . '"';?>
+					/>
 				<?php endif; ?>
 			<?php elseif (BannerHelper::isFlash($imageurl)) : ?>
 				<object

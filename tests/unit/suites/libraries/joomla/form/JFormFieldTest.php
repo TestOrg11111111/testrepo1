@@ -40,6 +40,7 @@ class JFormFieldTest extends TestCaseDatabase
 	{
 		parent::setUp();
 
+		require_once JPATH_PLATFORM . '/joomla/form/fields/text.php';
 		require_once JPATH_PLATFORM . '/joomla/form/fields/hidden.php';
 		require_once JPATH_PLATFORM . '/joomla/form/fields/checkboxes.php';
 

@@ -9,31 +9,32 @@
 defined('_JEXEC') or die;
 
 /* @var InstallationViewPreinstallHtml $this */
-var_dump('TEST');
 ?>
-<form action="index.php" method="post" id="languageForm">
-	<div class="btn-toolbar justify-content-end">
-		<div class="btn-group">
+<form action="index.php" method="post" id="languageForm" class="form-horizontal">
+	<div class="btn-toolbar">
+		<div class="btn-group pull-right">
 			<a href="#" class="btn btn-primary" onclick="Install.submitform();" title="<?php echo JText::_('JCHECK_AGAIN'); ?>"><span class="icon-refresh icon-white"></span> <?php echo JText::_('JCHECK_AGAIN'); ?></a>
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="control-group">
 		<label for="jform_language" class="control-label"><?php echo JText::_('INSTL_SELECT_LANGUAGE_TITLE'); ?></label>
-		<?php echo $this->form->getInput('language'); ?>
+		<div class="controls">
+			<?php echo $this->form->getInput('language'); ?>
+		</div>
 	</div>
-	<input type="hidden" name="view" value="preinstall">
-	<input type="hidden" name="task" value="setlanguage">
+	<input type="hidden" name="view" value="preinstall" />
+	<input type="hidden" name="task" value="setlanguage" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
-<form action="index.php" method="post" id="adminForm">
-	<div class="row">
-		<div class="col-md-6">
+<form action="index.php" method="post" id="adminForm" class="form-horizontal">
+	<div class="row-fluid">
+		<div class="span6">
 			<h3><?php echo JText::_('INSTL_PRECHECK_TITLE'); ?></h3>
-			<hr>
+			<hr class="hr-condensed" />
 			<p class="install-text">
 				<?php echo JText::_('INSTL_PRECHECK_DESC'); ?>
 			</p>
-			<table class="table table-striped table-sm">
+			<table class="table table-striped table-condensed">
 				<tbody>
 					<?php foreach ($this->options as $option) : ?>
 					<tr>
@@ -41,7 +42,7 @@ var_dump('TEST');
 							<?php echo $option->label; ?>
 						</td>
 						<td>
-							<span class="badge badge-<?php echo ($option->state) ? 'success' : 'important'; ?>">
+							<span class="label label-<?php echo $option->state ? 'success' : 'important'; ?>">
 								<?php echo JText::_($option->state ? 'JYES' : 'JNO'); ?>
 								<?php if ($option->notice) : ?>
 									<span class="icon-info-sign icon-white hasTooltip" title="<?php echo $option->notice; ?>"></span>
@@ -58,11 +59,11 @@ var_dump('TEST');
 				</tfoot>
 			</table>
 		</div>
-		<div class="col-md-6">
+		<div class="span6">
 			<h3><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_TITLE'); ?></h3>
-			<hr>
+			<hr class="hr-condensed" />
 			<p class="install-text"><?php echo JText::_('INSTL_PRECHECK_RECOMMENDED_SETTINGS_DESC'); ?></p>
-			<table class="table table-striped table-sm">
+			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
 						<th>
@@ -83,12 +84,12 @@ var_dump('TEST');
 							<?php echo $setting->label; ?>
 						</td>
 						<td>
-							<span class="badge badge-success disabled">
+							<span class="label label-success disabled">
 								<?php echo JText::_($setting->recommended ? 'JON' : 'JOFF'); ?>
 							</span>
 						</td>
 						<td>
-							<span class="badge badge-<?php echo ($setting->state === $setting->recommended) ? 'success' : 'warning'; ?>">
+							<span class="label label-<?php echo ($setting->state === $setting->recommended) ? 'success' : 'warning'; ?>">
 								<?php echo JText::_($setting->state ? 'JON' : 'JOFF'); ?>
 							</span>
 						</td>
@@ -103,11 +104,13 @@ var_dump('TEST');
 			</table>
 		</div>
 	</div>
-	<div class="btn-toolbar justify-content-end">
-		<div class="btn-group">
-			<a href="#" class="btn btn-primary" onclick="Install.submitform();" title="<?php echo JText::_('JCHECK_AGAIN'); ?>"><span class="icon-refresh icon-white"></span> <?php echo JText::_('JCHECK_AGAIN'); ?></a>
+	<div class="row-fluid">
+		<div class="btn-toolbar">
+			<div class="btn-group pull-right">
+				<a href="#" class="btn btn-primary" onclick="Install.submitform();" title="<?php echo JText::_('JCHECK_AGAIN'); ?>"><span class="icon-refresh icon-white"></span> <?php echo JText::_('JCHECK_AGAIN'); ?></a>
+			</div>
 		</div>
 	</div>
-	<input type="hidden" name="task" value="preinstall">
+	<input type="hidden" name="task" value="preinstall" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

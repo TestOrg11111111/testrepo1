@@ -61,7 +61,7 @@ class JPathwayTest extends TestCase
 	 */
 	public function test__construct()
 	{
-		$this->assertAttributeEquals(array(), 'pathway', $this->fixture);
+		$this->assertAttributeEquals(array(), '_pathway', $this->fixture);
 	}
 
 	/**
@@ -73,20 +73,46 @@ class JPathwayTest extends TestCase
 	 */
 	public function testGetInstance()
 	{
-		$this->assertInstanceOf('JPathway', JPathway::getInstance('site'));
-	}
+		$current = TestReflection::getValue('JApplicationHelper', '_clients');
 
-	/**
-	 * Test JPathway::getInstance() for an error loading the requested class.
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0
-	 * @expectedException  RuntimeException
-	 */
-	public function testGetInstanceMissingClass()
-	{
-		JPathway::getInstance('error');
+		// Test Client
+		$obj = new stdClass;
+		$obj->id = 0;
+		$obj->name = 'inspector';
+		$obj->path = JPATH_TESTS;
+
+		$obj2 = new stdClass;
+		$obj2->id = 1;
+		$obj2->name = 'inspector2';
+		$obj2->path = __DIR__ . '/stubs';
+
+		TestReflection::setValue('JApplicationHelper', '_clients', array($obj, $obj2));
+
+		$pathway = JPathway::getInstance('');
+
+		$this->assertInstanceOf('JPathway', $pathway);
+
+		$pathway = JPathway::getInstance('Inspector2');
+
+		$this->assertInstanceOf('JPathwayInspector2', $pathway);
+
+		$ret = true;
+
+		try
+		{
+			JPathway::getInstance('Error');
+		}
+		catch (Exception $e)
+		{
+			$ret = false;
+		}
+
+		if ($ret)
+		{
+			$this->fail('JPathway did not throw a proper exception with a false client.');
+		}
+
+		TestReflection::setValue('JApplicationHelper', '_clients', $current);
 	}
 
 	/**
@@ -134,10 +160,10 @@ class JPathwayTest extends TestCase
 		$pathway[4] = $object2;
 
 		$this->assertEquals(array(), $this->fixture->setPathway($pathway));
-		$this->assertAttributeEquals(array_values($pathway), 'pathway', $this->fixture);
+		$this->assertAttributeEquals(array_values($pathway), '_pathway', $this->fixture);
 
 		$this->assertEquals(array_values($pathway), $this->fixture->setPathway(array()));
-		$this->assertAttributeEquals(array(), 'pathway', $this->fixture);
+		$this->assertAttributeEquals(array(), '_pathway', $this->fixture);
 	}
 
 	/**
@@ -159,7 +185,7 @@ class JPathwayTest extends TestCase
 		$object2->link = 'index.php?key=item2';
 		$pathway[] = $object2;
 
-		TestReflection::setValue($this->fixture, 'pathway', $pathway);
+		TestReflection::setValue($this->fixture, '_pathway', $pathway);
 
 		$this->fixture->setPathway($pathway);
 
@@ -188,7 +214,7 @@ class JPathwayTest extends TestCase
 		$this->fixture->addItem('Item1', 'index.php?key=item1');
 		$this->fixture->addItem('Item2', 'index.php?key=item2');
 
-		$this->assertAttributeEquals($pathway, 'pathway', $this->fixture);
+		$this->assertAttributeEquals($pathway, '_pathway', $this->fixture);
 	}
 
 	/**
@@ -216,11 +242,11 @@ class JPathwayTest extends TestCase
 
 		$pathway[1]->name = 'Item3';
 
-		$this->assertAttributeEquals($pathway, 'pathway', $this->fixture);
+		$this->assertAttributeEquals($pathway, '_pathway', $this->fixture);
 
 		$this->assertFalse($this->fixture->setItemName(3, 'False'));
 
-		$this->assertAttributeEquals($pathway, 'pathway', $this->fixture);
+		$this->assertAttributeEquals($pathway, '_pathway', $this->fixture);
 	}
 
 	/**

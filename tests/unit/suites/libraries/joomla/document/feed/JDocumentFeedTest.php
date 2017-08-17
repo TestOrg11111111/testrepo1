@@ -27,12 +27,7 @@ class JDocumentFeedTest extends TestCase
 
 		$this->saveFactoryState();
 
-		$config = array(
-			array('offset', 'UTC', 'UTC')
-		);
-
-		JFactory::$application = $this->getMockCmsApp();
-		JFactory::$application->method('get')->will($this->returnValueMap($config));
+		JFactory::$application = $this->getMockWeb();
 
 		$this->object = new JDocumentFeed;
 	}

@@ -2,18 +2,20 @@
 /**
  * Part of the Joomla Framework DI Package
  *
- * @copyright  Copyright (C) 2013 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2013 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\DI;
 
-use Joomla\DI\Exception\ContainerNotFoundException;
+use Joomla\DI\Container;
 
 /**
  * Defines the trait for a Container Aware Class.
  *
  * @since  1.2
+ *
+ * @note   Traits are available in PHP 5.4+
  */
 trait ContainerAwareTrait
 {
@@ -31,7 +33,8 @@ trait ContainerAwareTrait
 	 * @return  Container
 	 *
 	 * @since   1.2
-	 * @throws  ContainerNotFoundException May be thrown if the container has not been set.
+	 *
+	 * @throws  \UnexpectedValueException May be thrown if the container has not been set.
 	 */
 	public function getContainer()
 	{
@@ -40,7 +43,7 @@ trait ContainerAwareTrait
 			return $this->container;
 		}
 
-		throw new ContainerNotFoundException('Container not set in ' . __CLASS__);
+		throw new \UnexpectedValueException('Container not set in ' . __CLASS__);
 	}
 
 	/**
@@ -48,7 +51,7 @@ trait ContainerAwareTrait
 	 *
 	 * @param   Container  $container  The DI container.
 	 *
-	 * @return  $this
+	 * @return  mixed  Returns itself to support chaining.
 	 *
 	 * @since   1.2
 	 */

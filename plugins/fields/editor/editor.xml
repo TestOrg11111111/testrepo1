@@ -25,17 +25,19 @@
 					name="buttons"
 					type="radio"
 					label="PLG_FIELDS_EDITOR_PARAMS_SHOW_BUTTONS_LABEL"
-					class="switcher"
+					description="PLG_FIELDS_EDITOR_PARAMS_SHOW_BUTTONS_DESC"
+					class="btn-group btn-group-yesno"
 					default="0"
 					>
-					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 
 				<field
 					name="hide"
 					type="plugins"
 					label="PLG_FIELDS_EDITOR_PARAMS_BUTTONS_HIDE_LABEL"
+					description="JGLOBAL_SELECT_SOME_OPTIONS"
 					folder="editors-xtd"
 					multiple="true"
 				/>
@@ -44,6 +46,7 @@
 					name="width"
 					type="text"
 					label="PLG_FIELDS_EDITOR_PARAMS_WIDTH_LABEL"
+					description="PLG_FIELDS_EDITOR_PARAMS_WIDTH_DESC"
 					default="100%"
 					size="5"
 				/>
@@ -52,6 +55,7 @@
 					name="height"
 					type="text"
 					label="PLG_FIELDS_EDITOR_PARAMS_HEIGHT_LABEL"
+					description="PLG_FIELDS_EDITOR_PARAMS_HEIGHT_DESC"
 					default="250px"
 					size="5"
 				/>
@@ -60,6 +64,7 @@
 					name="filter"
 					type="list"
 					label="PLG_FIELDS_EDITOR_PARAMS_FILTER_LABEL"
+					description="PLG_FIELDS_EDITOR_PARAMS_FILTER_DESC"
 					class="btn-group"
 					default="JComponentHelper::filterText"
 					>

@@ -19,11 +19,9 @@ extract($displayData);
 
 $versionFields = array('php_version', 'db_version', 'cms_version');
 ?>
-<table class="table table-striped m-1-b js-pstats-data-details" style="display:none;">
+<dl class="dl-horizontal js-pstats-data-details"  style="display:none;">
 	<?php foreach ($statsData as $key => $value) : ?>
-	<tr>
-		<td><b><?php echo JText::_('PLG_SYSTEM_STATS_LABEL_' . strtoupper($key)); ?></b></td>
-		<td><?php echo in_array($key, $versionFields) ? (preg_match('/\d+(?:\.\d+)+/', $value, $matches) ? $matches[0] : $value) : $value; ?></td>
-	</tr>
+		<dt><?php echo JText::_('PLG_SYSTEM_STATS_LABEL_' . strtoupper($key)); ?></dt>
+		<dd><?php echo in_array($key, $versionFields) ? (preg_match('/\d+(?:\.\d+)+/', $value, $matches) ? $matches[0] : $value) : $value; ?></dd>
 	<?php endforeach; ?>
-</table>
+</dl>

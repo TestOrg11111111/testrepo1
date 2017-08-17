@@ -33,7 +33,7 @@ class PlgSystemBase extends JPlugin
 		$config['type']   = 'System';
 		$config['params'] = new Registry;
 
-		$dispatcher = JFactory::getApplication()->getDispatcher();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Call the parent constructor
 		parent::__construct($dispatcher, $config);

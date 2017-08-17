@@ -9,11 +9,10 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\ArticlesCategory\Site\Helper\ArticlesCategoryHelper;
-use Joomla\CMS\Factory;
+// Include the helper functions only once
+JLoader::register('ModArticlesCategoryHelper', __DIR__ . '/helper.php');
 
-$input = Factory::getApplication()->input;
+$input = JFactory::getApplication()->input;
 
 // Prep for Normal or Dynamic Modes
 $mode   = $params->get('mode', 'normal');
@@ -54,18 +53,19 @@ $cacheid = md5(serialize(array ($idbase, $module->module, $module->id)));
 
 $cacheparams               = new stdClass;
 $cacheparams->cachemode    = 'id';
-$cacheparams->class        = 'Joomla\Module\ArticlesCategory\Site\Helper\ArticlesCategoryHelper';
+$cacheparams->class        = 'ModArticlesCategoryHelper';
 $cacheparams->method       = 'getList';
 $cacheparams->methodparams = $params;
 $cacheparams->modeparams   = $cacheid;
 
-$list = ModuleHelper::moduleCache($module, $params, $cacheparams);
+$list = JModuleHelper::moduleCache($module, $params, $cacheparams);
 
 if (!empty($list))
 {
 	$grouped                    = false;
 	$article_grouping           = $params->get('article_grouping', 'none');
 	$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
+	$moduleclass_sfx            = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 	$item_heading               = $params->get('item_heading');
 
 	if ($article_grouping !== 'none')
@@ -76,16 +76,16 @@ if (!empty($list))
 		{
 			case 'year' :
 			case 'month_year' :
-				$list = ArticlesCategoryHelper::groupByDate($list, $article_grouping_direction, $article_grouping, $params->get('month_year_format', 'F Y'));
+				$list = ModArticlesCategoryHelper::groupByDate($list, $article_grouping, $article_grouping_direction, $params->get('month_year_format', 'F Y'));
 				break;
 			case 'author' :
 			case 'category_title' :
-				$list = ArticlesCategoryHelper::groupBy($list, $article_grouping, $article_grouping_direction);
+				$list = ModArticlesCategoryHelper::groupBy($list, $article_grouping, $article_grouping_direction);
 				break;
 			default:
 				break;
 		}
 	}
 
-	require ModuleHelper::getLayoutPath('mod_articles_category', $params->get('layout', 'default'));
+	require JModuleHelper::getLayoutPath('mod_articles_category', $params->get('layout', 'default'));
 }

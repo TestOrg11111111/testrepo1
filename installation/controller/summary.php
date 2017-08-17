@@ -32,8 +32,11 @@ class InstallationControllerSummary extends JControllerBase
 		// Check for request forgeries.
 		JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
 
+		// Get the setup model.
+		$model = new InstallationModelSetup;
+
 		// Check the form
-		(new InstallationModelSetup)->checkForm('summary');
+		$model->checkForm('summary');
 
 		// Redirect to the page.
 		$r = new stdClass;

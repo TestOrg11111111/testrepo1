@@ -26,6 +26,7 @@
 					name="maximum"
 					type="integer"
 					label="MOD_TAGS_SIMILAR_MAX_LABEL"
+					description="MOD_TAGS_SIMILAR_MAX_DESC"
 					default="5"
 					first="1"
 					last="20"
@@ -48,6 +49,7 @@
 					name="ordering"
 					type="list"
 					label="MOD_TAGS_SIMILAR_FIELD_ORDERING_LABEL"
+					description="MOD_TAGS_SIMILAR_FIELD_ORDERING_DESC"
 					default="count"
 					>
 					<option value="count">MOD_TAGS_SIMILAR_FIELD_ORDERING_COUNT</option>
@@ -60,12 +62,14 @@
 					name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
 				/>
 
 				<field
 					name="moduleclass_sfx"
 					type="textarea"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
 					rows="3"
 				/>
 
@@ -73,6 +77,7 @@
 					name="owncache"
 					type="list"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
 					default="1"
 					>
 					<option value="1">JGLOBAL_USE_GLOBAL</option>
@@ -83,6 +88,7 @@
 					name="cache_time"
 					type="text"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
 					default="900"
 				/>
 			</fieldset>

@@ -37,34 +37,25 @@ var Installation = function(_container, _base) {
         Joomla.loadingLayer("show");
         busy = true;
         Joomla.removeMessages();
-        var data = $form.serialize();
+        var data = 'format: json&' + $form.serialize();
 
         $.ajax({
-            type: "POST",
-            url: baseUrl,
-            data: data,
-            dataType: 'json'
-        }).done(function (r) {
+            type : "POST",
+            url : baseUrl,
+            data : data,
+            dataType : 'json'
+        }).done(function(r) {
             Joomla.replaceTokens(r.token);
-
             if (r.messages) {
                 Joomla.renderMessages(r.messages);
             }
-
-            if (r.error) {
-                Joomla.renderMessages({'error': [r.message]});
-                Joomla.loadingLayer("hide");
-                busy = false;
+            var lang = $('html').attr('lang');
+            if (r.lang !== null && lang.toLowerCase() === r.lang.toLowerCase()) {
+                Install.goToPage(r.data.view, true);
             } else {
-                var lang = $('html').attr('lang');
-
-                if (r.lang !== null && lang.toLowerCase() === r.lang.toLowerCase()) {
-                    Install.goToPage(r.data.view, true);
-                } else {
-                    window.location = baseUrl + '?view=' + r.data.view;
-                }
+                window.location = baseUrl + '?view=' + r.data.view;
             }
-        }).fail(function (xhr) {
+        }).fail(function(xhr) {
             Joomla.loadingLayer("hide");
             busy = false;
             try {
@@ -94,34 +85,25 @@ var Installation = function(_container, _base) {
         Joomla.loadingLayer("show");
         busy = true;
         Joomla.removeMessages();
-        var data = $form.serialize();
+        var data = 'format: json&' + $form.serialize();
 
         $.ajax({
-            type: "POST",
-            url: baseUrl,
-            data: data,
-            dataType: 'json'
-        }).done(function (r) {
+            type : "POST",
+            url : baseUrl,
+            data : data,
+            dataType : 'json'
+        }).done(function(r) {
             Joomla.replaceTokens(r.token);
-
             if (r.messages) {
                 Joomla.renderMessages(r.messages);
             }
-
-            if (r.error) {
-                Joomla.renderMessages({'error': [r.message]});
-                Joomla.loadingLayer("hide");
-                busy = false;
+            var lang = $('html').attr('lang');
+            if (lang.toLowerCase() === r.lang.toLowerCase()) {
+                Install.goToPage(r.data.view, true);
             } else {
-                var lang = $('html').attr('lang');
-
-                if (lang.toLowerCase() === r.lang.toLowerCase()) {
-                    Install.goToPage(r.data.view, true);
-                } else {
-                    window.location = baseUrl + '?view=' + r.data.view;
-                }
+                window.location = baseUrl + '?view=' + r.data.view;
             }
-        }).fail(function (xhr) {
+        }).fail(function(xhr) {
             Joomla.loadingLayer("hide");
             busy = false;
             try {
@@ -176,12 +158,10 @@ var Installation = function(_container, _base) {
      * @param step_width  The width of the progress bar element
      */
     var install = function(tasks, step_width) {
-        var $progressWrapper = $('#install_progress');
-		var $progress        = $progressWrapper.find('.progress-bar');
+        var $progress = $('#install_progress').find('.bar');
 
         if (!tasks.length) {
             $progress.css('width', parseFloat($progress.get(0).style.width) + (step_width * 3) + '%');
-            $progressWrapper.val(parseFloat(($progress.get(0).style.width) + (step_width * 3)));
             goToPage('complete');
             return;
         }
@@ -193,32 +173,32 @@ var Installation = function(_container, _base) {
         var task = tasks.shift();
         var $form = $('#adminForm');
         var $tr = $('#install_' + task);
-        var data = $form.serialize();
+        var data = 'format: json&' + $form.serialize();
 
         $progress.css('width', parseFloat($progress.get(0).style.width) + step_width + '%');
-		$progressWrapper.val(parseFloat(($progress.get(0).style.width) + step_width));
         $tr.addClass('active');
         Joomla.loadingLayer("show");
 
         $.ajax({
-            type: "POST",
-            url: baseUrl + '?format=json&task=Install' + task,
-            data: data,
-            dataType: 'json'
-        }).done(function (r) {
+            type : "POST",
+            url : baseUrl + '?task=Install' + task,
+            data : data,
+            dataType : 'json'
+        }).done(function(r) {
+
             Joomla.replaceTokens(r.token);
             if (r.messages) {
                 Joomla.renderMessages(r.messages);
                 Install.goToPage(r.data.view, true);
             } else {
                 $progress.css('width', parseFloat($progress.get(0).style.width) + (step_width * 10) + '%');
-				$progressWrapper.val(parseFloat(($progress.get(0).style.width) + (step_width * 10)));
                 $tr.removeClass('active');
-                Joomla.loadingLayer('hide');
+                Joomla.loadingLayer("hide");
 
                 install(tasks, step_width);
-			}
-        }).fail(function (xhr) {
+            }
+
+        }).fail(function(xhr) {
             Joomla.renderMessages([['', Joomla.JText._('JLIB_DATABASE_ERROR_DATABASE_CONNECT', 'A Database error occurred.')]]);
             Install.goToPage('summary');
 
@@ -237,12 +217,12 @@ var Installation = function(_container, _base) {
      * @param el  The page element requesting the event
      */
     var detectFtpRoot = function(el) {
-        var $el = $(el), data = $el.closest('form').serialize();
+        var $el = $(el), data = 'format: json&' + $el.closest('form').serialize();
 
         $el.attr('disabled', 'disabled');
         $.ajax({
             type : "POST",
-            url : baseUrl + '?format=json&task=detectftproot',
+            url : baseUrl + '?task=detectftproot',
             data : data,
             dataType : 'json'
         }).done(function(r) {
@@ -273,13 +253,13 @@ var Installation = function(_container, _base) {
      */
     var verifyFtpSettings = function(el) {
         // make the ajax call
-        var $el = $(el), data = $el.closest('form').serialize();
+        var $el = $(el), data = 'format: json&' + $el.closest('form').serialize();
 
         $el.attr('disabled', 'disabled');
 
         $.ajax({
             type : "POST",
-            url : baseUrl + '?format=json&task=verifyftpsettings',
+            url : baseUrl + '?task=verifyftpsettings',
             data : data,
             dataType : 'json'
         }).done(function(r) {
@@ -356,8 +336,7 @@ var Installation = function(_container, _base) {
     };
 
     var toggle = function(id, el, value) {
-        var val = $('input[name="jform[' + el + ']"]:checked').val(), 
-			$id = $('#' + id);
+        var val = $('input[name="jform[' + el + ']"]:checked').val(), $id = $('#' + id);
         if (val === value.toString()) {
             $id.show();
         } else {
@@ -400,7 +379,13 @@ var Installation = function(_container, _base) {
 function initElements()
 {
 	(function($){
-		$('.hasTooltip').tooltip({html:true});
+		$('.hasTooltip').tooltip();
+
+		// Chosen select boxes
+		$('select').chosen({
+			disable_search_threshold : 10,
+			allow_single_deselect : true
+		});
 
 		// Turn radios into btn-group
 		$('.radio.btn-group label').addClass('btn');
@@ -415,10 +400,10 @@ function initElements()
 			}
 		});
 
-		$('.btn-group label:not(.active)').on('click', function()
+		$('.btn-group label:not(.active)').click(function()
 		{
-			var label = $(this),
-			    input = $('#' + label.attr('for'));
+			var label = $(this);
+			var input = $('#' + label.attr('for'));
 
 			if (!input.prop('checked'))
 			{
@@ -428,15 +413,7 @@ function initElements()
 				{
 					if (input.val() == '')
 					{
-						// Check for the sample data "No" button
-						if (input.attr('id') == 'jform_sample_file0')
-						{
-							label.addClass('active btn-danger');
-						}
-						else
-						{
-							label.addClass('active btn-primary');
-						}
+						label.addClass('active btn-primary');
 					}
 					else if (input.val() == 0)
 					{
@@ -468,11 +445,10 @@ function initElements()
 
 		$('.btn-group input[checked="checked"]').each(function()
 		{
-			var $self  = $(this),
-			    parent = $self.parents('.btn-group'),
-			    attrId = $self.attr('id');
+			var $self  = $(this);
+			var attrId = $self.attr('id');
 
-			if (parent.hasClass('btn-group-reverse'))
+			if ($self.hasClass('btn-group-reverse'))
 			{
 				if ($self.val() == '')
 				{

@@ -9,11 +9,13 @@
 
 defined('_JEXEC') or die;
 
+JLoader::import('components.com_fields.libraries.fieldsplugin', JPATH_ADMINISTRATOR);
+
 /**
  * Fields Integer Plugin
  *
  * @since  3.7.0
  */
-class PlgFieldsInteger extends \Joomla\Component\Fields\Administrator\Plugin\FieldsPlugin
+class PlgFieldsInteger extends FieldsPlugin
 {
 }

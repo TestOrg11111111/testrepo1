@@ -10,7 +10,8 @@
 defined('_JEXEC') or die;
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
+
+JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
 
 /**
  * Administrator category HTML
@@ -48,6 +49,7 @@ abstract class JHtmlCategoriesAdministrator
 				->select('l.lang_code')
 				->from('#__categories as c')
 				->where('c.id IN (' . implode(',', array_values($associations)) . ')')
+				->where('c.id != ' . $catid)
 				->join('LEFT', '#__languages as l ON c.language=l.lang_code')
 				->select('l.image')
 				->select('l.title as language_title');
@@ -66,9 +68,10 @@ abstract class JHtmlCategoriesAdministrator
 			{
 				foreach ($items as &$item)
 				{
-					$text       = $item->lang_sef ? strtoupper($item->lang_sef) : 'XX';
-					$url        = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . (int) $item->id . '&extension=' . $extension);
-					$classes    = 'hasPopover badge badge-association badge-' . $item->lang_sef;
+					$text    = $item->lang_sef ? strtoupper($item->lang_sef) : 'XX';
+					$url     = JRoute::_('index.php?option=com_categories&task=category.edit&id=' . (int) $item->id . '&extension=' . $extension);
+					$classes = 'hasPopover label label-association label-' . $item->lang_sef;
+
 					$item->link = '<a href="' . $url . '" title="' . $item->language_title . '" class="' . $classes
 						. '" data-content="' . htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8') . '" data-placement="top">'
 						. $text . '</a>';
@@ -77,7 +80,7 @@ abstract class JHtmlCategoriesAdministrator
 
 			JHtml::_('bootstrap.popover');
 
-			$html = \Joomla\CMS\Layout\LayoutHelper::render('joomla.content.associations', $items);
+			$html = JLayoutHelper::render('joomla.content.associations', $items);
 		}
 
 		return $html;

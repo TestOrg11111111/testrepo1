@@ -19,13 +19,6 @@ JFormHelper::loadFieldClass('color');
 class JFormFieldColorTest extends TestCaseDatabase
 {
 	/**
-	 * $_SERVER variable
-	 *
-	 * @var   array
-	 */
-	protected $server;
-
-	/**
 	 * This method is called before the first test of this test class is run.
 	 *
 	 * @return  void
@@ -37,10 +30,6 @@ class JFormFieldColorTest extends TestCaseDatabase
 		parent::setUp();
 
 		$this->saveFactoryState();
-		$this->server = $_SERVER;
-		$_SERVER['REQUEST_METHOD'] = 'get';
-		$_SERVER['HTTP_HOST'] = 'mydomain.com';
-		$_SERVER['SCRIPT_NAME'] = '/';
 
 		JFactory::$application = $this->getMockCmsApp();
 	}
@@ -56,8 +45,6 @@ class JFormFieldColorTest extends TestCaseDatabase
 	protected function tearDown()
 	{
 		$this->restoreFactoryState();
-		$_SERVER = $this->server;
-		JUri::reset();
 
 		parent::tearDown();
 	}

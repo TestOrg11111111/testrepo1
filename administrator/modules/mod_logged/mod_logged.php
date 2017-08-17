@@ -9,14 +9,14 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\Module\Logged\Administrator\Helper\LoggedHelper;
+// Include dependencies.
+JLoader::register('ModLoggedHelper', __DIR__ . '/helper.php');
 
-$users = LoggedHelper::getList($params);
+$users = ModLoggedHelper::getList($params);
 
 if ($params->get('automatic_title', 0))
 {
-	$module->title = LoggedHelper::getTitle($params);
+	$module->title = ModLoggedHelper::getTitle($params);
 }
 
-require ModuleHelper::getLayoutPath('mod_logged', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_logged', $params->get('layout', 'default'));

@@ -21,7 +21,7 @@ class PlgSystemJoomla extends JPlugin
 	/**
 	 * Application object
 	 *
-	 * @var    \Joomla\Application\AbstractApplication
+	 * @var    JApplicationBase
 	 * @since  3.1
 	 */
 	protected $app;
@@ -49,7 +49,7 @@ class PlgSystemJoomla extends JPlugin
 		$config['type']   = 'System';
 		$config['params'] = new Registry;
 
-		$dispatcher = JFactory::getApplication()->getDispatcher();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Call the parent constructor
 		parent::__construct($dispatcher, $config);

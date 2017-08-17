@@ -9,6 +9,8 @@
 
 defined('JPATH_BASE') or die;
 
+JHtml::_('bootstrap.tooltip');
+
 $params = $displayData['params'];
 $legacy = $displayData['legacy'];
 

@@ -116,7 +116,18 @@ class PlgTwofactorauthTotp extends JPlugin
 		@ob_start();
 
 		// Include the form.php from a template override. If none is found use the default.
-		include_once JPluginHelper::getLayoutPath('twofactorauth', 'totp', 'form');
+		$path = FOFPlatform::getInstance()->getTemplateOverridePath('plg_twofactorauth_totp', true);
+
+		JLoader::import('joomla.filesystem.file');
+
+		if (JFile::exists($path . '/form.php'))
+		{
+			include_once $path . '/form.php';
+		}
+		else
+		{
+			include_once __DIR__ . '/tmpl/form.php';
+		}
 
 		// Stop output buffering and get the form contents
 		$html = @ob_get_clean();

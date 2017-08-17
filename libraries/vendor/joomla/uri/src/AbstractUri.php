@@ -2,102 +2,85 @@
 /**
  * Part of the Joomla Framework Uri Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\Uri;
 
 /**
- * Base Joomla Uri Class
+ * Uri Class
+ *
+ * Abstract base for out uri classes.
+ *
+ * This class should be considered an implementation detail. Typehint against UriInterface.
  *
  * @since  1.0
  */
 abstract class AbstractUri implements UriInterface
 {
 	/**
-	 * Original URI
-	 *
-	 * @var    string
+	 * @var    string  Original URI
 	 * @since  1.0
 	 */
-	protected $uri;
+	protected $uri = null;
 
 	/**
-	 * Protocol
-	 *
-	 * @var    string
+	 * @var    string  Protocol
 	 * @since  1.0
 	 */
-	protected $scheme;
+	protected $scheme = null;
 
 	/**
-	 * Host
-	 *
-	 * @var    string
+	 * @var    string  Host
 	 * @since  1.0
 	 */
-	protected $host;
+	protected $host = null;
 
 	/**
-	 * Port
-	 *
-	 * @var    integer
+	 * @var    integer  Port
 	 * @since  1.0
 	 */
-	protected $port;
+	protected $port = null;
 
 	/**
-	 * Username
-	 *
-	 * @var    string
+	 * @var    string  Username
 	 * @since  1.0
 	 */
-	protected $user;
+	protected $user = null;
 
 	/**
-	 * Password
-	 *
-	 * @var    string
+	 * @var    string  Password
 	 * @since  1.0
 	 */
-	protected $pass;
+	protected $pass = null;
 
 	/**
-	 * Path
-	 *
-	 * @var    string
+	 * @var    string  Path
 	 * @since  1.0
 	 */
-	protected $path;
+	protected $path = null;
 
 	/**
-	 * Query
-	 *
-	 * @var    string
+	 * @var    string  Query
 	 * @since  1.0
 	 */
-	protected $query;
+	protected $query = null;
 
 	/**
-	 * Anchor
-	 *
-	 * @var    string
+	 * @var    string  Anchor
 	 * @since  1.0
 	 */
-	protected $fragment;
+	protected $fragment = null;
 
 	/**
-	 * Query variable hash
-	 *
-	 * @var    array
+	 * @var    array  Query variable hash
 	 * @since  1.0
 	 */
-	protected $vars = [];
+	protected $vars = array();
 
 	/**
 	 * Constructor.
-	 *
 	 * You can pass a URI string to the constructor to initialise a specific URI.
 	 *
 	 * @param   string  $uri  The optional URI string
@@ -113,7 +96,7 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Magic method to get the string representation of the UriInterface object.
+	 * Magic method to get the string representation of the URI object.
 	 *
 	 * @return  string
 	 *
@@ -125,7 +108,7 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Returns full URI string.
+	 * Returns full uri string.
 	 *
 	 * @param   array  $parts  An array specifying the parts to render.
 	 *
@@ -133,7 +116,7 @@ abstract class AbstractUri implements UriInterface
 	 *
 	 * @since   1.0
 	 */
-	public function toString(array $parts = ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'])
+	public function toString(array $parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'))
 	{
 		// Make sure the query is created
 		$query = $this->getQuery();
@@ -171,7 +154,7 @@ abstract class AbstractUri implements UriInterface
 	 * @param   string  $name     Name of the query variable to get.
 	 * @param   string  $default  Default value to return if the variable is not set.
 	 *
-	 * @return  mixed   Requested query variable if present otherwise the default value.
+	 * @return  array   Query variables.
 	 *
 	 * @since   1.0
 	 */
@@ -190,7 +173,7 @@ abstract class AbstractUri implements UriInterface
 	 *
 	 * @param   boolean  $toArray  True to return the query as a key => value pair array.
 	 *
-	 * @return  string|array   Query string or Array of parts in query string depending on the function param
+	 * @return  string   Query string.
 	 *
 	 * @since   1.0
 	 */
@@ -204,14 +187,15 @@ abstract class AbstractUri implements UriInterface
 		// If the query is empty build it first
 		if (is_null($this->query))
 		{
-			$this->query = static::buildQuery($this->vars);
+			$this->query = self::buildQuery($this->vars);
 		}
 
 		return $this->query;
 	}
 
 	/**
-	 * Get the URI scheme (protocol)
+	 * Get URI scheme (protocol)
+	 * ie. http, https, ftp, etc...
 	 *
 	 * @return  string  The URI scheme.
 	 *
@@ -223,9 +207,10 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Get the URI username
+	 * Get URI username
+	 * Returns the username, or null if no username was specified.
 	 *
-	 * @return  string  The username, or null if no username was specified.
+	 * @return  string  The URI username.
 	 *
 	 * @since   1.0
 	 */
@@ -235,9 +220,10 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Get the URI password
+	 * Get URI password
+	 * Returns the password, or null if no password was specified.
 	 *
-	 * @return  string  The password, or null if no password was specified.
+	 * @return  string  The URI password.
 	 *
 	 * @since   1.0
 	 */
@@ -247,9 +233,10 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Get the URI host
+	 * Get URI host
+	 * Returns the hostname/ip or null if no hostname/ip was specified.
 	 *
-	 * @return  string  The hostname/IP or null if no hostname/IP was specified.
+	 * @return  string  The URI host.
 	 *
 	 * @since   1.0
 	 */
@@ -259,9 +246,10 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Get the URI port
+	 * Get URI port
+	 * Returns the port number, or null if no port was specified.
 	 *
-	 * @return  integer  The port number, or null if no port was specified.
+	 * @return  integer  The URI port number.
 	 *
 	 * @since   1.0
 	 */
@@ -271,7 +259,7 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Gets the URI path string
+	 * Gets the URI path string.
 	 *
 	 * @return  string  The URI path string.
 	 *
@@ -283,7 +271,8 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Get the URI anchor string
+	 * Get the URI archor string
+	 * Everything after the "#".
 	 *
 	 * @return  string  The URI anchor string.
 	 *
@@ -301,9 +290,9 @@ abstract class AbstractUri implements UriInterface
 	 *
 	 * @since   1.0
 	 */
-	public function isSsl()
+	public function isSSL()
 	{
-		return $this->getScheme() == 'https';
+		return $this->getScheme() == 'https' ? true : false;
 	}
 
 	/**
@@ -342,11 +331,6 @@ abstract class AbstractUri implements UriInterface
 
 		$parts = UriHelper::parse_url($uri);
 
-		if ($parts === false)
-		{
-			throw new \RuntimeException(sprintf('Could not parse the requested URI %s', $uri));
-		}
-
 		$retval = ($parts) ? true : false;
 
 		// We need to replace &amp; with & for parse_str to work right...
@@ -355,10 +339,14 @@ abstract class AbstractUri implements UriInterface
 			$parts['query'] = str_replace('&amp;', '&', $parts['query']);
 		}
 
-		foreach ($parts as $key => $value)
-		{
-			$this->$key = $value;
-		}
+		$this->scheme   = isset($parts['scheme']) ? $parts['scheme'] : null;
+		$this->user     = isset($parts['user']) ? $parts['user'] : null;
+		$this->pass     = isset($parts['pass']) ? $parts['pass'] : null;
+		$this->host     = isset($parts['host']) ? $parts['host'] : null;
+		$this->port     = isset($parts['port']) ? $parts['port'] : null;
+		$this->path     = isset($parts['path']) ? $parts['path'] : null;
+		$this->query    = isset($parts['query']) ? $parts['query'] : null;
+		$this->fragment = isset($parts['fragment']) ? $parts['fragment'] : null;
 
 		// Parse the query
 		if (isset($parts['query']))
@@ -370,9 +358,9 @@ abstract class AbstractUri implements UriInterface
 	}
 
 	/**
-	 * Resolves //, ../ and ./ from a path and returns the result.
+	 * Resolves //, ../ and ./ from a path and returns
+	 * the result. Eg:
 	 *
-	 * For example:
 	 * /foo/bar/../boo.php	=> /foo/boo.php
 	 * /foo/bar/../../boo.php => /boo.php
 	 * /foo/bar/.././/boo.php => /foo/boo.php

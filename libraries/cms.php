@@ -8,15 +8,6 @@
 
 defined('_JEXEC') or die;
 
-trigger_error(
-	sprintf(
-		'Bootstrapping Joomla using the %1$s file is deprecated.  Use %2$s instead.',
-		__FILE__,
-		__DIR__ . '/bootstrap.php'
-	),
-	E_USER_DEPRECATED
-);
-
 // Set the platform root path as a constant if necessary.
 if (!defined('JPATH_PLATFORM'))
 {
@@ -37,6 +28,9 @@ if (!class_exists('JLoader'))
 
 // Register the library base path for CMS libraries.
 JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
+
+/** @note This will be loaded through composer in Joomla 4 **/
+JLoader::registerNamespace('Joomla\\CMS', JPATH_PLATFORM . '/src', false, false, 'psr4');
 
 // Create the Composer autoloader
 $loader = require JPATH_LIBRARIES . '/vendor/autoload.php';

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
-$buttons = \Joomla\Module\Quickicon\Administrator\Helper\QuickIconHelper::getButtons($params);
+JLoader::register('ModQuickIconHelper', __DIR__ . '/helper.php');
 
-require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_quickicon', $params->get('layout', 'default'));
+$buttons = ModQuickIconHelper::getButtons($params);
+
+require JModuleHelper::getLayoutPath('mod_quickicon', $params->get('layout', 'default'));

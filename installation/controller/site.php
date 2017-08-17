@@ -32,16 +32,15 @@ class InstallationControllerSite extends JControllerBase
 		// Check for request forgeries.
 		JSession::checkToken() or $app->sendJsonResponse(new Exception(JText::_('JINVALID_TOKEN'), 403));
 
-		// Set the page redirect.
-		$r = new stdClass;
-		$r->view = 'database';
+		// Get the setup model.
+		$model = new InstallationModelSetup;
 
 		// Check the form
-		if ((new InstallationModelSetup)->checkForm('site') === false)
-		{
-			$r->view = 'site';
-		}
+		$model->checkForm('site');
 
+		// Redirect to the page.
+		$r = new stdClass;
+		$r->view = 'database';
 		$app->sendJsonResponse($r);
 	}
 }

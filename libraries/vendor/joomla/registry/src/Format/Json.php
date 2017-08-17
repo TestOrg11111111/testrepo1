@@ -8,15 +8,14 @@
 
 namespace Joomla\Registry\Format;
 
-use Joomla\Registry\Factory;
-use Joomla\Registry\FormatInterface;
+use Joomla\Registry\AbstractRegistryFormat;
 
 /**
  * JSON format handler for Registry.
  *
  * @since  1.0
  */
-class Json implements FormatInterface
+class Json extends AbstractRegistryFormat
 {
 	/**
 	 * Converts an object into a JSON formatted string.
@@ -28,12 +27,19 @@ class Json implements FormatInterface
 	 *
 	 * @since   1.0
 	 */
-	public function objectToString($object, array $options = [])
+	public function objectToString($object, $options = array())
 	{
 		$bitmask = isset($options['bitmask']) ? $options['bitmask'] : 0;
-		$depth = isset($options['depth']) ? $options['depth'] : 512;
 
-		return json_encode($object, $bitmask, $depth);
+		// The depth parameter is only present as of PHP 5.5
+		if (version_compare(PHP_VERSION, '5.5', '>='))
+		{
+			$depth = isset($options['depth']) ? $options['depth'] : 512;
+
+			return json_encode($object, $bitmask, $depth);
+		}
+
+		return json_encode($object, $bitmask);
 	}
 
 	/**
@@ -49,13 +55,13 @@ class Json implements FormatInterface
 	 * @since   1.0
 	 * @throws  \RuntimeException
 	 */
-	public function stringToObject($data, array $options = ['processSections' => false])
+	public function stringToObject($data, array $options = array('processSections' => false))
 	{
 		$data = trim($data);
 
 		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
-			return Factory::getFormat('Ini')->stringToObject($data, $options);
+			return AbstractRegistryFormat::getInstance('Ini')->stringToObject($data, $options);
 		}
 
 		$decoded = json_decode($data);
@@ -66,6 +72,6 @@ class Json implements FormatInterface
 			throw new \RuntimeException(sprintf('Error decoding JSON data: %s', json_last_error_msg()));
 		}
 
-		return (object) $decoded;
+		return $decoded;
 	}
 }

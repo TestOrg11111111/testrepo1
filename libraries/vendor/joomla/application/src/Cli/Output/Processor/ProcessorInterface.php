@@ -9,7 +9,7 @@
 namespace Joomla\Application\Cli\Output\Processor;
 
 /**
- * Interface for a command line output processor
+ * Class ProcessorInterface.
  *
  * @since  1.1.0
  */

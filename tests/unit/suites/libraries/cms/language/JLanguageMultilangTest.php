@@ -85,6 +85,9 @@ class JLanguageMultiLangTest extends TestCaseDatabase
 	 */
 	protected function tearDown()
 	{
+		// Reset the dispatcher instance.
+		TestReflection::setValue('JEventDispatcher', 'instance', null);
+
 		$_SERVER = $this->backupServer;
 		unset($this->backupServer);
 		$this->restoreFactoryState();

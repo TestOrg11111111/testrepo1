@@ -9,7 +9,6 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>3.0.0</version>
 	<description>COM_BANNERS_XML_DESCRIPTION</description>
-	<namespace>Joomla\Component\Banners</namespace>
 
 	<install> <!-- Runs on install -->
 		<sql>
@@ -23,12 +22,11 @@
 	</uninstall>
 
 	<files folder="site">
-		<filename>dispatcher.php</filename>
+		<filename>banners.php</filename>
+		<filename>controller.php</filename>
 		<filename>router.php</filename>
-		<folder>Controller</folder>
-		<folder>Helper</folder>
 		<folder>helpers</folder>
-		<folder>Model</folder>
+		<folder>models</folder>
 	</files>
 	<administration>
 		<menu img="class:banners">com_banners</menu>
@@ -74,14 +72,11 @@
 			<filename>access.xml</filename>
 			<filename>banners.php</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
-			<folder>Controller</folder>
-			<folder>Helper</folder>
+			<filename>controller.php</filename>
+			<folder>controllers</folder>
 			<folder>helpers</folder>
-			<folder>Model</folder>
 			<folder>models</folder>
-			<folder>Table</folder>
-			<folder>View</folder>
+			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
 		<languages folder="admin">

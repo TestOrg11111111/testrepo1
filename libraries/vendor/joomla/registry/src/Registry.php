@@ -20,7 +20,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	/**
 	 * Registry Object
 	 *
-	 * @var    \stdClass
+	 * @var    object
 	 * @since  1.0
 	 */
 	protected $data;
@@ -32,6 +32,15 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 * @since  1.5.2
 	 */
 	protected $initialized = false;
+
+	/**
+	 * Registry instances container.
+	 *
+	 * @var    array
+	 * @since  1.0
+	 * @deprecated  2.0  Object caching will no longer be supported
+	 */
+	protected static $instances = array();
 
 	/**
 	 * Path separator
@@ -54,11 +63,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 		$this->data = new \stdClass;
 
 		// Optionally load supplied data.
-		if ($data instanceof Registry)
-		{
-			$this->merge($data);
-		}
-		elseif (is_array($data) || is_object($data))
+		if (is_array($data) || is_object($data))
 		{
 			$this->bindData($this->data, $data);
 		}
@@ -97,7 +102,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @return  integer  The custom count as an integer.
 	 *
-	 * @link    https://secure.php.net/manual/en/countable.count.php
+	 * @link    http://php.net/manual/en/countable.count.php
 	 * @since   1.3.0
 	 */
 	public function count()
@@ -242,6 +247,30 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	}
 
 	/**
+	 * Returns a reference to a global Registry object, only creating it
+	 * if it doesn't already exist.
+	 *
+	 * This method must be invoked as:
+	 * <pre>$registry = Registry::getInstance($id);</pre>
+	 *
+	 * @param   string  $id  An ID for the registry instance
+	 *
+	 * @return  Registry  The Registry object.
+	 *
+	 * @since   1.0
+	 * @deprecated  2.0  Instantiate a new Registry instance instead
+	 */
+	public static function getInstance($id)
+	{
+		if (empty(self::$instances[$id]))
+		{
+			self::$instances[$id] = new self;
+		}
+
+		return self::$instances[$id];
+	}
+
+	/**
 	 * Gets this object represented as an ArrayIterator.
 	 *
 	 * This allows the data properties to be accessed via a foreach statement.
@@ -267,7 +296,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @since   1.0
 	 */
-	public function loadArray(array $array, $flattened = false, $separator = null)
+	public function loadArray($array, $flattened = false, $separator = null)
 	{
 		if (!$flattened)
 		{
@@ -311,7 +340,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @since   1.0
 	 */
-	public function loadFile($file, $format = 'JSON', array $options = [])
+	public function loadFile($file, $format = 'JSON', $options = array())
 	{
 		$data = file_get_contents($file);
 
@@ -329,10 +358,12 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @since   1.0
 	 */
-	public function loadString($data, $format = 'JSON', array $options = [])
+	public function loadString($data, $format = 'JSON', $options = array())
 	{
 		// Load a string into the given namespace [or default namespace if not given]
-		$obj = Factory::getFormat($format, $options)->stringToObject($data, $options);
+		$handler = AbstractRegistryFormat::getInstance($format, $options);
+
+		$obj = $handler->stringToObject($data, $options);
 
 		// If the data object has not yet been initialized, direct assign the object
 		if (!$this->initialized)
@@ -358,8 +389,13 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @since   1.0
 	 */
-	public function merge(Registry $source, $recursive = false)
+	public function merge($source, $recursive = false)
 	{
+		if (!$source instanceof Registry)
+		{
+			return false;
+		}
+
 		$this->bindData($this->data, $source->toArray(), $recursive, false);
 
 		return $this;
@@ -397,7 +433,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function offsetExists($offset)
 	{
-		return $this->exists($offset);
+		return (boolean) ($this->get($offset) !== null);
 	}
 
 	/**
@@ -616,15 +652,18 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 * Get a namespace in a given string format
 	 *
 	 * @param   string  $format   Format to return the string in
-	 * @param   array   $options  Parameters used by the formatter, see formatters for more info
+	 * @param   mixed   $options  Parameters used by the formatter, see formatters for more info
 	 *
 	 * @return  string   Namespace in string format
 	 *
 	 * @since   1.0
 	 */
-	public function toString($format = 'JSON', array $options = [])
+	public function toString($format = 'JSON', $options = array())
 	{
-		return Factory::getFormat($format, $options)->objectToString($this->data, $options);
+		// Return a namespace in a given format
+		$handler = AbstractRegistryFormat::getInstance($format, $options);
+
+		return $handler->objectToString($this->data, $options);
 	}
 
 	/**
@@ -683,7 +722,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	protected function asArray($data)
 	{
-		$array = [];
+		$array = array();
 
 		if (is_object($data))
 		{
@@ -716,7 +755,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function flatten($separator = null)
 	{
-		$array = [];
+		$array = array();
 
 		if (empty($separator))
 		{
@@ -740,7 +779,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @since   1.3.0
 	 */
-	protected function toFlatten($separator = null, $data = null, array &$array = [], $prefix = '')
+	protected function toFlatten($separator = null, $data = null, &$array = array(), $prefix = '')
 	{
 		$data = (array) $data;
 

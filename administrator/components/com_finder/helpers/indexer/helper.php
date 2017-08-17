@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Router\Router;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 
@@ -364,7 +362,7 @@ class FinderIndexerHelper
 		// We need to go to com_languages to get the site default language, it's the best we can guess.
 		if (empty($lang))
 		{
-			$lang = ComponentHelper::getParams('com_languages')->get('site', 'en-GB');
+			$lang = JComponentHelper::getParams('com_languages')->get('site', 'en-GB');
 		}
 
 		return $lang;
@@ -415,10 +413,12 @@ class FinderIndexerHelper
 		static $router;
 
 		// Only get the router once.
-		if (!($router instanceof Router))
+		if (!($router instanceof JRouter))
 		{
 			// Get and configure the site router.
-			$router = Router::getInstance('site');
+			$config = JFactory::getConfig();
+			$router = JRouter::getInstance('site');
+			$router->setMode($config->get('sef', 1));
 		}
 
 		// Build the relative route.
@@ -433,7 +433,7 @@ class FinderIndexerHelper
 	 * Method to get extra data for a content before being indexed. This is how
 	 * we add Comments, Tags, Labels, etc. that should be available to Finder.
 	 *
-	 * @param   FinderIndexerResult  &$item  The item to index as an FinderIndexerResult object.
+	 * @param   FinderIndexerResult  &$item  The item to index as a FinderIndexerResult object.
 	 *
 	 * @return  boolean  True on success, false on failure.
 	 *
@@ -442,10 +442,21 @@ class FinderIndexerHelper
 	 */
 	public static function getContentExtras(FinderIndexerResult &$item)
 	{
+		// Get the event dispatcher.
+		$dispatcher = JEventDispatcher::getInstance();
+
 		// Load the finder plugin group.
 		JPluginHelper::importPlugin('finder');
 
-		JFactory::getApplication()->triggerEvent('onPrepareFinderContent', array(&$item));
+		// Trigger the event.
+		$results = $dispatcher->trigger('onPrepareFinderContent', array(&$item));
+
+		// Check the returned results. This is for plugins that don't throw
+		// exceptions when they encounter serious errors.
+		if (in_array(false, $results))
+		{
+			throw new Exception($dispatcher->getError(), 500);
+		}
 
 		return true;
 	}
@@ -463,6 +474,9 @@ class FinderIndexerHelper
 	public static function prepareContent($text, $params = null)
 	{
 		static $loaded;
+
+		// Get the dispatcher.
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Load the content plugins if necessary.
 		if (empty($loaded))
@@ -483,7 +497,7 @@ class FinderIndexerHelper
 		$content->text = $text;
 
 		// Fire the onContentPrepare event.
-		JFactory::getApplication()->triggerEvent('onContentPrepare', array('com_finder.indexer', &$content, &$params, 0));
+		$dispatcher->trigger('onContentPrepare', array('com_finder.indexer', &$content, &$params, 0));
 
 		return $content->text;
 	}
