@@ -4,6 +4,8 @@
 	* Joomla! 3.8 version history - https://docs.joomla.org/Special:MyLanguage/Joomla_3.8_version_history
 	* Detailed changes in the Changelog: https://github.com/joomla/joomla-cms/commits/staging
  
+
+
 2- What is Joomla?
 	* Joomla! is a Content Management System (CMS) which enables you to build Web sites and powerful online applications.
 	* It's a free and Open Source software, distributed under the GNU General Public License version 2 or later.
